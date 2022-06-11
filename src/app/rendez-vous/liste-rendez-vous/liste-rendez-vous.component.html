@@ -1,0 +1,121 @@
+
+
+
+<!--
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+<p-messages style="width: 50vw" [value]="msgs"></p-messages>
+
+
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <div class="d-flex align-items-end mb-2 mb-lg-0">
+              <h4 class="me-1">Liste des rendez-vous</h4>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="input-group">
+              <input class="form-control" type="text" placeholder="Search mail...">
+              <button class="btn btn-light btn-icon" type="button" id="button-search-addon"><i class="feather icon-search"></i></button>
+            </div>
+          </div>
+        </div>
+       <div class="table-responsive mt-3">
+          <table id="dataTableExample" class="table">
+            <thead>
+              <tr>
+
+                <th>#</th>
+
+                <th>La date du rendez vous</th>
+                <th>Heure</th>
+                <th>Status</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr  *ngFor="let rdv of rendezVous; let i = index">
+                <td>{{ rdv.id }}</td>
+                <td>{{rdv.dateRendezVous | date: 'dd/MM/yyyy'}}</td>
+                <td>{{rdv.heureRendezVous | date: 'h:mm a'}}</td>
+                <td>
+                  {{rdv.status}}
+                </td>
+
+
+        <td>
+          <button pButton pRipple type="button" (click)="open(content)" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
+          <button pButton pRipple type="button" (click)="open(infos)" icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
+          <button pButton pRipple type="button" (click)="confirm1()" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+    </td>
+
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+
+
+  <ng-template #infos let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"></h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+    <div class="modal-footer">
+  </div>
+  </ng-template>
+
+
+</div>
+
+
+
+
+<div class="container">
+
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Modifier Patient</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+  </div>
+  </ng-template>
+
+
+</div>
+-->
+
+<div class="col-12 col-md-12">
+  <div class="card">
+    <div class="card-body">
+      <full-calendar
+        [options]='options'
+      ></full-calendar>
+    </div>
+    </div>
+</div>
+
+
+
+

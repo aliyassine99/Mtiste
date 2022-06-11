@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Ajouter un rendez-vous</h6>
+          <form [formGroup]="rendezVousForm" (ngSubmit)="onSubmit()">
+
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="mb-3">
+                  <label class="form-label">Patient</label>
+
+
+
+                  <ng-select [(ngModel)]="selectedPatient">
+                    <ng-option *ngFor="let patient of patients" [value]="patient">{{ patient.cin }} - {{patient.prenom}} {{patient.nom}}</ng-option>
+                 </ng-select>
+
+
+
+
+                </div>
+              </div><!-- Col -->
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="mb-3">
+                  <label class="form-label">La date du rendez-vous</label>
+                  <input  formControlName="dateRendezVous" type="datetime-local" class="form-control" placeholder="Entrer Cin">
+                </div>
+              </div><!-- Col -->
+
+            </div>
+
+            <div class="row">
+
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="mb-3">
+                  <label class="form-label" >Description</label>
+                  <textarea formControlName="description" class="form-control"></textarea>
+                     </div>
+              </div><!-- Col -->
+
+            </div>
+
+
+
+
+            <button type="submit" class="btn btn-primary submit">Enregistrer</button>
+
+          </form>
+               </div>
+    </div>
+  </div>
+</div>

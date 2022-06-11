@@ -1,0 +1,204 @@
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+<p-messages style="width: 50vw" [value]="msgs"></p-messages>
+
+
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <div class="d-flex align-items-end mb-2 mb-lg-0">
+              <h4 class="me-1">Liste des patients</h4>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="input-group">
+              <input class="form-control" type="text" placeholder="Search mail...">
+              <button class="btn btn-light btn-icon" type="button" id="button-search-addon"><i class="feather icon-search"></i></button>
+            </div>
+          </div>
+        </div>
+       <div class="table-responsive mt-3">
+          <table id="dataTableExample" class="table">
+            <thead>
+              <tr>
+
+                <th>#</th>
+                <th>C.I.N</th>
+                <th>Name</th>
+                <th>Prenom</th>
+                <th>Date Naissance</th>
+                <th>Telephone</th>
+
+                <th>Operation</th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr  *ngFor="let patient of patients; let i = index">
+                <td>{{ i }}</td>
+                <td>{{patient.cin}}</td>
+                <td>{{patient.nom}}</td>
+                <td>{{patient.prenom}}</td>
+                <td>{{patient.dateNaissance | date: 'dd/MM/yyyy'}}</td>
+                <td>{{patient.telephone}}</td>
+
+
+        <td>
+          <button pButton pRipple type="button" (click)="open(content)" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
+          <button pButton pRipple type="button" (click)="open(infos)" icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
+          <button pButton pRipple type="button" (click)="confirm1()" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+    </td>
+
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal des information -->
+
+<div class="container">
+
+
+  <ng-template #infos let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"></h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger"  (click)="modal.dismiss('Cross click')">Fermer</button>
+
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Enregistrer</button>
+    </div>
+  </ng-template>
+
+
+</div>
+
+
+
+
+<!-- modal de modification -->
+<div class="container">
+
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Modifier Patient</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+
+
+        <div class="row">
+
+          <div class="col-md-12"> <div class="mb-3">
+            <label for="exampleInputUsername1" class="form-label">CIN</label>
+            <input type="text" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username">
+
+          </div></div>
+
+        </div>
+        <div class="row">
+
+          <div class="col-md-6"> <div class="mb-3">
+            <label for="exampleInputUsername1" class="form-label">Prenom</label>
+            <input type="text" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username">
+
+          </div></div>
+          <div class="col-md-6"> <div class="mb-3">
+            <label for="exampleInputUsername1" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username">
+
+          </div></div>
+        </div>
+
+
+        <div class="row">
+
+          <div class="col-md-6"> <div class="mb-3">
+            <label for="exampleInputUsername1" class="form-label">Date Naissance</label>
+            <input type="date" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username">
+
+          </div></div>
+          <div class="col-md-6"> <div class="mb-3">
+            <label for="exampleInputUsername1" class="form-label">Genre</label>
+
+            <select class="form-control">
+              <option>Masculin</option>
+              <option>Feminin</option>
+            </select>
+
+         </div></div>
+        </div>
+
+
+
+        <div class="row">
+
+          <div class="col-md-6"> <div class="mb-3">
+            <label for="exampleInputUsername1" class="form-label">Telephone</label>
+            <input type="number" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="+212 ------">
+
+          </div></div>
+          <div class="col-md-6"> <div class="mb-3">
+            <label for="exampleInputUsername1" class="form-label">Email</label>
+            <input type="text" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username">
+
+          </div></div>
+        </div>
+
+
+
+        <div class="row">
+
+          <div class="col-md-12"> <div class="mb-3">
+            <label for="exampleInputUsername1" class="form-label">Adresse</label>
+            <input type="number" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="+212 ------">
+
+          </div></div>
+
+        </div>
+
+
+
+
+
+
+
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger"  (click)="modal.dismiss('Cross click')">Fermer</button>
+
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Enregistrer</button>
+    </div>
+  </ng-template>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
