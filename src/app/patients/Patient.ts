@@ -12,6 +12,6 @@ export class Patient{
     public adresse?: string,
     public telephone?: number,
     public email?: string,
-    public groupeSanguins?: string
+    public sexe?: string
     ){}
 }

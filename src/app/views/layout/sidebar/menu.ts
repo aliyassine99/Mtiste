@@ -27,9 +27,10 @@ export const MENU: MenuItem[] = [
         link: '/patients/liste',
       }]
   },
+
   {
     label: 'Client Rendez Vous',
-    icon: 'user',
+    icon: 'clock',
     subItems: [
       {
         label: 'Prendre votre rendez-vous',
@@ -49,6 +50,19 @@ export const MENU: MenuItem[] = [
       {
         label: 'Liste des rendez vous',
         link: 'rendez-vous/liste-rendez-vous',
+      }]
+  },
+  {
+    label: 'Consultation',
+    icon: 'user-check',
+    subItems: [
+      {
+        label: 'Ajouter une Consultation',
+        link: '/consultation/edit-consultation',
+      },
+      {
+        label: 'Liste des consultations',
+        link: '/consultation/liste',
       }]
   }
   ,

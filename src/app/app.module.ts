@@ -46,6 +46,15 @@ import { ListeRendezVousComponent } from './rendez-vous/liste-rendez-vous/liste-
 import { ConsultationComponent } from './consultation/consultation.component';
 import { EditConsultationComponent } from './consultation/edit-consultation/edit-consultation.component';
 import { ListeConsultationComponent } from './consultation/liste-consultation/liste-consultation.component';
+import { OrdonnanceComponent } from './ordonnance/ordonnance.component';
+import { EditOrdonnanceComponent } from './ordonnance/edit-ordonnance/edit-ordonnance.component';
+import { ListeOrdonnanceComponent } from './ordonnance/liste-ordonnance/liste-ordonnance.component';
+import { HttpClientModule } from '@angular/common/http';
+
+
+//modal
+
+import { DialogModule } from 'primeng/dialog';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -68,13 +77,18 @@ FullCalendarModule.registerPlugins([
     ConsultationComponent,
     EditConsultationComponent,
     ListeConsultationComponent,
+    OrdonnanceComponent,
+    EditOrdonnanceComponent,
+    ListeOrdonnanceComponent,
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     BrowserAnimationsModule,
+    DialogModule,
     ReactiveFormsModule,
     ArchwizardModule,
     LayoutModule,

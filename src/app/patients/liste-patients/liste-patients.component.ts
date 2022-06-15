@@ -5,6 +5,7 @@ import {ConfirmationService} from 'primeng/api';
 import {Message} from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-liste-patients',
@@ -20,7 +21,11 @@ export class ListePatientsComponent implements OnInit {
 
 
   msgs: Message[] = [];
+  form: FormGroup;
   closeResult = '';
+  editPatient: Patient;
+
+  displayModal: boolean;
 
   position: string;
 
@@ -112,9 +117,11 @@ export class ListePatientsComponent implements OnInit {
       });
   }
 
-  open(content:any) {
+  open(patient:Patient,content:any) {
+    this.editPatient= patient;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
+      this.editPatient= patient;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
@@ -128,6 +135,14 @@ export class ListePatientsComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  showModalDialog(patient: Patient){
+    this.editPatient= patient;
+    this.displayModal= true;
+  }
+  onUpdateEmloyee(patient: Patient){
+
   }
 
 

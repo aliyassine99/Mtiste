@@ -5,9 +5,11 @@ export class RendezVous{
 
 
   constructor(
+    public id?:number,
     public title?:string,
     public date?: Date,
-    public description?: string
+    public description?: string,
+    public patient?: Patient
 
 
   ){}

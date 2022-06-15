@@ -13,6 +13,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
+        path: "consultation",
+        loadChildren: () => import('./consultation/consultation.module').then(m => m.ConsultationModule)
+
+      },
+      {
         path: 'reservation',
         loadChildren: () => import('./reservation/reservation.module').then(m => m.ReservationModule)
       },

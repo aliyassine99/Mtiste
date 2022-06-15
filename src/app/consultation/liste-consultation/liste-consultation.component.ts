@@ -9,7 +9,12 @@ export class ListeConsultationComponent implements OnInit {
 
   constructor() { }
 
+  public displayModal: boolean;
   ngOnInit(): void {
   }
 
+
+  showModalDialog() {
+    this.displayModal = true;
+}
 }
