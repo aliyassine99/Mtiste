@@ -103,7 +103,7 @@ FullCalendarModule.registerPlugins([
 
   ],
   providers: [
-    AuthGuard,
+
     {
       provide: HIGHLIGHT_OPTIONS, // https://www.npmjs.com/package/ngx-highlightjs
       useValue: {

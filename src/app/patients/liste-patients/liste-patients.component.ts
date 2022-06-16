@@ -24,8 +24,9 @@ export class ListePatientsComponent implements OnInit {
   form: FormGroup;
   closeResult = '';
   editPatient: Patient;
-
+  showDetailDialog: boolean;
   displayModal: boolean;
+
 
   position: string;
 
@@ -140,10 +141,17 @@ export class ListePatientsComponent implements OnInit {
   showModalDialog(patient: Patient){
     this.editPatient= patient;
     this.displayModal= true;
+    this.showDetailDialog= false;
+
+
   }
   onUpdateEmloyee(patient: Patient){
 
   }
 
+  showDetailPopUp(){
+    this.displayModal=false;
+    this.showDetailDialog= true;
+  }
 
 }

@@ -10,11 +10,11 @@ const routes: Routes = [
   {
     path: '',
     component: BaseComponent,
-    canActivate: [AuthGuard],
     children: [
       {
         path: "consultation",
-        loadChildren: () => import('./consultation/consultation.module').then(m => m.ConsultationModule)
+        loadChildren: () => import('./consultation/consultation.module').then(m => m.ConsultationModule),
+        outlet: "home"
 
       },
       {
