@@ -11,6 +11,7 @@ const routes: Routes = [
     path: '',
     component: BaseComponent,
     children: [
+
       {
         path: "consultation",
         loadChildren: () => import('./consultation/consultation.module').then(m => m.ConsultationModule),

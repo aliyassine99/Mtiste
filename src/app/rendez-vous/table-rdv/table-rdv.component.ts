@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Patient } from '../Patient';
+
 import {ConfirmationService} from 'primeng/api';
 import {Message} from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
-import { PatientsService } from '../patients.service';
-import { Employee } from '../Employee';
+import { Patient } from 'src/app/patients/Patient';
+import { PatientsService } from 'src/app/patients/patients.service';
+import { Employee } from 'src/app/patients/Employee';
 
 @Component({
-  selector: 'app-liste-patients',
-  templateUrl: './liste-patients.component.html',
+  selector: 'app-table-rdv',
+  templateUrl: './table-rdv.component.html',
   styles: [`
   :host ::ng-deep button {
       margin-right: .25em;
@@ -19,7 +20,7 @@ import { Employee } from '../Employee';
 `],
 providers: [ConfirmationService],
 })
-export class ListePatientsComponent implements OnInit {
+export class TableRdvComponent implements OnInit {
 
   employees: Employee[];
   msgs: Message[] = [];
@@ -28,18 +29,17 @@ export class ListePatientsComponent implements OnInit {
   editPatient: Patient;
   showDetailDialog: boolean;
   displayModal: boolean;
-  pageOfItems: Array<any>;
-
+  term: any;
 
 
   position: string;
 
   patients: Patient[] = [
     {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
+      "cin": "AB",
+      "nom": "Marc",
+      "prenom": "Lance",
+      "dateNaissance": new Date("12/04/2022"),
       "telephone": 923469828,
       "email": "douglas@gmail"
 
@@ -50,9 +50,33 @@ export class ListePatientsComponent implements OnInit {
     },
     {
       "cin": "BQ12",
-      "nom": "Douglas",
+      "nom": "Sam",
       "prenom": "Pace",
-      "dateNaissance": new Date,
+      "dateNaissance": new Date("12/04/2022"),
+      "telephone": 923469828,
+      "email": "douglas@gmail"
+
+
+
+
+
+    }, {
+      "cin": "BHG",
+      "nom": "Lucas",
+      "prenom": "Faker",
+      "dateNaissance": new Date("09/04/2022"),
+      "telephone": 923469828,
+      "email": "douglas@gmail"
+
+
+
+
+
+    }, {
+      "cin": "OEN",
+      "nom": "Rami",
+      "prenom": "Malek",
+      "dateNaissance": new Date("11/09/2022"),
       "telephone": 923469828,
       "email": "douglas@gmail"
 
@@ -64,177 +88,7 @@ export class ListePatientsComponent implements OnInit {
       "cin": "BQ12",
       "nom": "Douglas",
       "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }, {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }, {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
-    , {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date,
+      "dateNaissance": new Date("12/12/2012"),
       "telephone": 923469828,
       "email": "douglas@gmail"
 
@@ -255,15 +109,7 @@ export class ListePatientsComponent implements OnInit {
     })
 
 
-    this.patients = Array(150).fill(0).map((x, i) => ({ id: (i + 1), name: `Item ${i + 1}`}));
-
-
   }
-
-  onChangePage(pageOfItems: Array<any>) {
-    // update current page of items
-    this.pageOfItems = pageOfItems;
-}
 
   confirm1() {
       this.confirmationService.confirm({

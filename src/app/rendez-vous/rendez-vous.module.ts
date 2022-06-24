@@ -5,6 +5,7 @@ import { RendezVousComponent } from './rendez-vous.component';
 import { EditRendezVousComponent } from './edit-rendez-vous/edit-rendez-vous.component';
 import { ListeRendezVousComponent } from './liste-rendez-vous/liste-rendez-vous.component';
 import {DropdownModule} from 'primeng/dropdown';
+import { TableRdvComponent } from './table-rdv/table-rdv.component';
 
 
 
@@ -22,17 +23,24 @@ const routes: Routes= [
     {
       path: "liste-rendez-vous",
       component: ListeRendezVousComponent
+    },
+    {
+      path: "rendez-vous",
+      component: TableRdvComponent
     }
   ]
   }
 ]
 
 @NgModule({
-  declarations: [],
+  declarations: [
+
+
+
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    DropdownModule
 
   ]
 })

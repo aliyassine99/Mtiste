@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Inject, Renderer2 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +11,8 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
 
   constructor(
-    @Inject(DOCUMENT) private document: Document, 
+    private tokenStorage: TokenStorageService,
+    @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
     private router: Router
   ) { }
@@ -36,6 +38,12 @@ export class NavbarComponent implements OnInit {
     if (!localStorage.getItem('isLoggedin')) {
       this.router.navigate(['/auth/login']);
     }
+  }
+
+  loggingout(){
+    this.tokenStorage.signout();
+    this.router.navigate(['/auth/login']);
+
   }
 
 }

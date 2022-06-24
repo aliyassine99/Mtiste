@@ -1,8 +1,11 @@
 
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { EventApi } from '@fullcalendar/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationService, Message, PrimeNGConfig } from 'primeng/api';
+import { DisplayRdv } from '../DisplayRdv';
+import { RendezVousService } from '../rendez-vous.service';
 
 import { RendezVous } from '../RendezVous';
 
@@ -23,7 +26,9 @@ export class ListeRendezVousComponent  {
   currentEvents: EventApi[] = [];
 
   newEv: RendezVous[]= [];
+  oldEve: RendezVous[]= [];
 
+  newEvents: DisplayRdv[]= [];
   msgs: Message[] = [];
   closeResult = '';
   ticket:string;
@@ -37,43 +42,73 @@ export class ListeRendezVousComponent  {
 
 
 
-  constructor(private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal) {}
+  constructor(private httpClient: HttpClient,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private rendezVousService: RendezVousService) {}
+
+
 
   ngOnInit() {
 
-    this.newEv = [{
-      title: "Samuel",
-      date: new Date("2022-06-11T03:00")
+   this.rendezVousService.getRendezVous().subscribe(
+    (response: RendezVous[]) =>{
+
+      this.newEv = response;
+      console.log(this.newEv);
+      for(let i =0;i< this.newEv.length ; i++){
+        console.log(this.newEv[i].dateRdv+" "+this.newEv[i].heureRdv);
+        const date = this.newEv[i].dateRdv+" "+this.newEv[i].heureRdv;
+       this.newEvents.push({
+
+        date: new Date(date)
+       })
+       }
+
+       this.options = {
+        initialDate : new Date(),
+
+        events: [] = this.newEvents,
+
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        editable: true,
+        selectable:true,
+        selectMirror: true,
+        dayMaxEvents: true,
+
+
+};
+}
+   );
+
+
+
+   console.log("dates " +this.newEvents);
+
+
+
+
+
+
+
+   this.oldEve = [{
+
+      date: new Date("2022-06-11 14:36:11")
     },{
-      title: "Lauri",
-      date: new Date("2022-06-11T13:00")
+
+      date: new Date("2022-06-11 14:36:11")
     },{
-      title: "May",
-      date: new Date("2022-06-11T23:00")
+
+      date: new Date("2022-06-11 14:36:11")
     },{
-      title: "Tressy",
-      date: new Date("2022-06-12T14:36")
+
+      date: new Date("2022-06-12T14:36:11")
 
 
     }]
     this.primengConfig.ripple = true;
-     this.options = {
-                initialDate : new Date(),
 
-                events: [] = this.newEv,
-
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                editable: true,
-                selectable:true,
-                selectMirror: true,
-                dayMaxEvents: true,
-
-
-        };
 
 
   }

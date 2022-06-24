@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Patient } from 'src/app/patients/Patient';
+import { RendezVous } from '../RendezVous';
 
 @Component({
   selector: 'app-edit-rendez-vous',
@@ -19,7 +21,7 @@ export class EditRendezVousComponent implements OnInit {
   patient: Patient;
 
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
 
     this.patients = [
       {
@@ -72,14 +74,22 @@ export class EditRendezVousComponent implements OnInit {
   rendezVousForm: FormGroup = new FormGroup({
     "dateRendezVous" : new FormControl("",[Validators.required]),
     "patient": new FormControl("", [Validators.required]),
-    "description" : new FormControl("",[Validators.required])
+    "description" : new FormControl("",[Validators.required]),
+    "hourRendezVous": new FormControl("",[Validators.required])
   });
 
   onSubmit(){
 
 
-    let json=JSON.stringify(this.rendezVousForm.value);
-    console.log(this.patient=JSON.parse(json));
+    const rendezVous: RendezVous = new RendezVous("knk",22,"sjkfj",`${this.rendezVousForm.value.dateRendezVous}`,`${this.rendezVousForm.value.hourRendezVous}`);
+
+    this.httpClient.post("http://localhost:8888/admin/create", rendezVous).subscribe();
+
+
+
+
+
+    console.log(rendezVous);
 
   }
 

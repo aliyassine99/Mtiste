@@ -11,12 +11,12 @@
         <div class="row align-items-center">
           <div class="col-lg-8">
             <div class="d-flex align-items-end mb-2 mb-lg-0">
-              <h4 class="me-1">Liste des patients</h4>
+              <h4 class="me-1">Liste des rendez-vous</h4>
             </div>
           </div>
           <div class="col-lg-4">
             <div class="input-group">
-              <input class="form-control" type="text" placeholder="Search mail...">
+              <input class="form-control" [(ngModel)]="term" type="text" placeholder="Recherche...">
               <button class="btn btn-light btn-icon" type="button" id="button-search-addon"><i class="feather icon-search"></i></button>
             </div>
           </div>
@@ -39,7 +39,7 @@
             </thead>
             <tbody>
 
-              <tr  *ngFor="let patient of patients; let i = index">
+              <tr *ngFor="let patient of patients | filter:term; let i = index">
                 <td>{{ i }}</td>
                 <td>{{patient.cin}}</td>
                 <td>{{patient.nom}}</td>
@@ -167,9 +167,7 @@
 
 
 
-
 </div>
-
 
 
 <p-dialog header="Plus de detail" [(visible)]="showDetailDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
@@ -181,5 +179,7 @@
             <p-button icon="pi pi-times" (click)="showDetailDialog=false" label="Annuler"></p-button>
         </ng-template>
 </p-dialog>
+
+
 
 

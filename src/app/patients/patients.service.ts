@@ -13,6 +13,10 @@ export class PatientsService {
 
   constructor(private http: HttpClient){}
 
+  getEmployees(): Observable<any>{
+    return this.http.get(`http://localhost:8888/employees`)
+  }
+
   public getPatients(): Observable<Patient[]>{
 
     return this.http.get<Patient[]>(`${this.urlApi}/patient/all`);

@@ -3,7 +3,7 @@
     <div class="card">
       <div class="row">
         <div class="col-md-4 pe-md-0">
-          <div class="auth-side-wrapper" [ngStyle]="{ 'background-image': 'url(https://via.placeholder.com/219x452)' }">
+          <div class="auth-side-wrapper" style="background-image: url(https://www.pornic.com/medias/images/prestataires/multitailles/800x600_chirurgien-dentiste-10871.jpg);background-size: cover; background-position: center ; background-repeat: no-repeat;">
 
           </div>
         </div>
@@ -11,7 +11,7 @@
           <div class="auth-form-wrapper px-4 py-5">
             <h5 class="text-muted fw-normal mb-4">Bonjour! Connectez vous a Mtiste.</h5>
             <form class="forms-sample">
-              <div class="mb-3">
+           <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Nom d'utilisateur</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" name="username" [(ngModel)]="username" value="admin@demo.com">
               </div>
@@ -33,7 +33,6 @@
                <button  class="btn btn-primary me-2 mb-2 mb-md-0" (click)="sendLogin(username, password)">Login</button>
 
               </div>
-              <a routerLink="/reservation/edit-reservation" class="d-block mt-3 text-muted">Je suis un client</a>
 
 
             </form>

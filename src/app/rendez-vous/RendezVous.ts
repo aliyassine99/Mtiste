@@ -5,11 +5,14 @@ export class RendezVous{
 
 
   constructor(
-    public id?:number,
-    public title?:string,
+
+    public name?:string,
+    public salary?:number,
+    public fonction?:string,
+    public dateRdv?: string,
+    public heureRdv?: string,
     public date?: Date,
-    public description?: string,
-    public patient?: Patient
+
 
 
   ){}

@@ -15,7 +15,7 @@ export class RendezVousService {
 
 
   public getRendezVous(): Observable<RendezVous[]>{
-    return this.http.get<RendezVous[]>(`${this.apiUrl}/rendez-vous/all`);
+    return this.http.get<RendezVous[]>("http://localhost:8888/employees");
   }
 
   public addRendezVous(rendezVous: RendezVous): Observable<RendezVous>{

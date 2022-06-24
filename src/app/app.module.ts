@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -49,12 +51,17 @@ import { ListeConsultationComponent } from './consultation/liste-consultation/li
 import { OrdonnanceComponent } from './ordonnance/ordonnance.component';
 import { EditOrdonnanceComponent } from './ordonnance/edit-ordonnance/edit-ordonnance.component';
 import { ListeOrdonnanceComponent } from './ordonnance/liste-ordonnance/liste-ordonnance.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 //modal
 
 import { DialogModule } from 'primeng/dialog';
+import { JwtService } from 'interceptors/jwt';
+import { TableRdvComponent } from './rendez-vous/table-rdv/table-rdv.component';
+
+
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -80,6 +87,8 @@ FullCalendarModule.registerPlugins([
     OrdonnanceComponent,
     EditOrdonnanceComponent,
     ListeOrdonnanceComponent,
+    TableRdvComponent
+
 
   ],
   imports: [
@@ -98,13 +107,16 @@ FullCalendarModule.registerPlugins([
     NgbModule,
     NgSelectModule,
     FullCalendarModule,
-    CalendarModule
+    CalendarModule,
+    Ng2SearchPipeModule
+
 
 
   ],
   providers: [
-
+{provide: HTTP_INTERCEPTORS,useClass: JwtService, multi: true},
     {
+
       provide: HIGHLIGHT_OPTIONS, // https://www.npmjs.com/package/ngx-highlightjs
       useValue: {
         coreLibraryLoader: () => import('highlight.js/lib/core'),

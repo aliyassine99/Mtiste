@@ -4,8 +4,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Main',
     isTitle: true
-  },
-  {
+  },  {
     label: 'Accueil',
     icon: 'home',
     link: '/dashboard'
@@ -48,9 +47,15 @@ export const MENU: MenuItem[] = [
         link: 'rendez-vous/edit-rendez-vous',
       },
       {
-        label: 'Liste des rendez vous',
+        label: 'Clendrier des rendez vous',
         link: 'rendez-vous/liste-rendez-vous',
-      }]
+      },
+      {
+        label: 'Liste des rendez vous',
+        link: 'rendez-vous/rendez-vous',
+      }
+
+    ]
   },
   {
     label: 'Consultation',
