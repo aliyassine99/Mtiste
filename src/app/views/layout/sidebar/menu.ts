@@ -17,26 +17,12 @@ export const MENU: MenuItem[] = [
     label: 'Patients',
     icon: 'user',
     subItems: [
-      {
-        label: 'Ajouter un Patient',
-        link: 'patients/edit-patient',
-      },
+
       {
         label: 'Liste des patients',
         link: '/patients/liste',
       }]
-  },
-
-  {
-    label: 'Client Rendez Vous',
-    icon: 'clock',
-    subItems: [
-      {
-        label: 'Prendre votre rendez-vous',
-        link: 'reservation/edit-reservation',
-      }]
   }
-
   ,
   {
     label: 'Rendez Vous',
@@ -61,16 +47,32 @@ export const MENU: MenuItem[] = [
     label: 'Consultation',
     icon: 'user-check',
     subItems: [
-      {
-        label: 'Ajouter une Consultation',
-        link: '/consultation/edit-consultation',
-      },
+
       {
         label: 'Liste des consultations',
-        link: '/consultation/liste',
+        link: 'consultation/liste',
+      }]
+  },
+
+  {
+    label: 'Ordonnance',
+    icon: 'shield',
+    subItems: [
+      {
+        label: 'Liste des ordonnances',
+        link: 'ordonnance/liste-ordonnance',
       }]
   }
   ,
+  {
+    label: 'Facture',
+    icon: 'dollar-sign',
+    subItems: [
+      {
+        label: 'Liste des factures',
+        link: 'facture/liste-factures',
+      }]
+  },
   {
     label: 'Email',
     icon: 'mail',

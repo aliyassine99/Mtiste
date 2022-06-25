@@ -1,74 +1,219 @@
+
+
 <div class="row">
-  <div class="col-md-12 stretch-card">
+
+  <div class="col-md-12 grid-margin">
     <div class="card">
       <div class="card-body">
-        <h6 class="card-title">Ajouter un rendez-vous</h6>
-          <form [formGroup]="rendezVousForm" (ngSubmit)="onSubmit()">
+        <h6 class="card-title">Prenez votre rendez-vous dentaire</h6>
+
+        <aw-wizard #wizardForm>
+
+          <aw-wizard-step stepTitle="Ajouter un patient">
+            <form class="mt-4" (ngSubmit)="onSubmit1()" [formGroup]="patientForm">
 
 
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="mb-3">
-                  <label class="form-label">Patient</label>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="mb-3">
+                    <label class="form-label">CIN</label>
+                    <input  formControlName="cin" type="text" class="form-control" placeholder="Entrer Cin">
+                    <i class="DangerMessage" *ngIf="!patientForm.get('cin')?.valid && patientForm.get('cin')?.touched">champ est invalid</i>
+
+                  </div>
+                </div><!-- Col -->
+
+              </div>
 
 
 
-                  <ng-select [(ngModel)]="selectedPatient">
-                    <ng-option *ngFor="let patient of patients" [value]="patient">{{ patient.cin }} - {{patient.prenom}} {{patient.nom}}</ng-option>
-                 </ng-select>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="mb-3">
+                    <label class="form-label">Nom Complet</label>
+                    <input formControlName="nomComplet" type="text" class="form-control" placeholder="Entrer le nom et prenom">
+                    <i class="DangerMessage" *ngIf="!patientForm.get('nomComplet')?.valid && patientForm.get('nomComplet')?.touched">champ est invalid</i>
+
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="mb-3">
+                    <label class="form-label">Date de Naissance</label>
+                    <input formControlName="dateNaissance" type="date" class="form-control" >
+                    <i class="DangerMessage" *ngIf="!patientForm.get('dateNaissance')?.valid && patientForm.get('dateNaissance')?.touched">champ est invalid</i>
+
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="mb-3">
+                    <label class="form-label">Sexe</label>
+                    <select class="form-control" formControlName="sexe">
+                      <option >Homme</option>
+                      <option>Femme</option>
+                    </select>
+                    <i class="DangerMessage" *ngIf="!patientForm.get('sexe')?.valid && patientForm.get('sexe')?.touched">champ est invalid</i>
+
+                      </div>
+                </div>
+              </div>
 
 
 
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input formControlName="email" type="email" class="form-control" placeholder="Entrer l'adresse mail">
+                    <i class="DangerMessage" *ngIf="!patientForm.get('email')?.valid && patientForm.get('email')?.touched">champ est invalid</i>
+
+                  </div>
+                </div><!-- Col -->
+                <div class="col-sm-6">
+                  <div class="mb-3">
+                    <label class="form-label">Telephone</label>
+                    <input formControlName="telephone" type="number" class="form-control" placeholder="+212 ----">
+                    <i class="DangerMessage" *ngIf="!patientForm.get('telephone')?.valid && patientForm.get('telephone')?.touched">champ est invalid</i>
+
+                  </div>
+                </div><!-- Col -->
+              </div>
+
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="mb-3">
+                    <label class="form-label">Adresse</label>
+                    <input formControlName="adresse" type="text" class="form-control" placeholder="Entrer l'adresse">
+                    <i class="DangerMessage" *ngIf="!patientForm.get('adresse')?.valid && patientForm.get('adresse')?.touched">champ est invalid</i>
+
+
+                  </div>
+
+                </div><!-- Col -->
+
+              </div>
+              <div class="d-flex justify-content-center mt-2">
+                <button [disabled]="!patientForm.valid" class="btn btn-primary" type="submit">Continuez</button>
+              </div>
+            </form>
+            <!--
+                <form (ngSubmit)="form1Submit()" [formGroup]="validationForm1">
+
+              <div class="row mb-3">
+                <label for="firstName" class="col-sm-3 col-form-label">First name</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="firstName" formControlName="firstName"
+                  [ngClass]="{'is-invalid': isForm1Submitted && form1.firstName.errors}" placeholder="First name">
+                  <div *ngIf="isForm1Submitted && form1.firstName.errors?.required" class="invalid-feedback">
+                    Required
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="lastName" class="col-sm-3 col-form-label">Last name</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="lastName" formControlName="lastName"
+                    [ngClass]="{'is-invalid': isForm1Submitted && form1.lastName.errors}" placeholder="Last name">
+                  <div *ngIf="isForm1Submitted && form1.lastName.errors?.required" class="invalid-feedback">
+                    Required
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="userName" class="col-sm-3 col-form-label">User name</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="userName" formControlName="userName"
+                  [ngClass]="{'is-invalid': isForm1Submitted && form1.userName.errors}" placeholder="User name">
+                  <div *ngIf="isForm1Submitted && form1.userName.errors?.required" class="invalid-feedback">
+                    Required
+                  </div>
+                </div>
+              </div>
+
+            </form>
+            -->
+
+          </aw-wizard-step>
+
+          <aw-wizard-step stepTitle="Ajouter le rendez-vous">
+            <form (ngSubmit)="form2Submit()" (ngSubmit)="onSubmit()" [formGroup]="rendezVousForm">
+              <div class="row mt-4">
+
+                <div class="col-md-3">
 
                 </div>
-              </div><!-- Col -->
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Date Du rendez-vous</label>
+                    <input formControlName="dateRendezVous" type="date" class="form-control" placeholder="Entrer l'a date">
+                    <i class="DangerMessage" *ngIf="!rendezVousForm.get('dateRendezVous')?.valid && rendezVousForm.get('dateRendezVous')?.touched">merci de choisir une date</i>
 
-            </div>
-
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="mb-3">
-                  <label class="form-label">La date du rendez-vous</label>
-                  <input  formControlName="dateRendezVous" type="date" class="form-control" placeholder="Entrer Cin">
+                  </div>
                 </div>
+
+                <div class="col-md-3">
+
+                </div>
+
+              </div><!-- Col -->
+                <div class="row">
+
+                  <div class="col-md-3">
+
+                  </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Heure</label>
+                    <select formControlName="heureRendezVous" class="form-control">
+                      <option>8:00</option>
+                      <option>9:00</option>
+                      <option>10:00</option>
+                      <option>11:00</option>
+                      <option>12:00</option>
+                      <option>13:00</option>
+                      <option>15:00</option>
+                      <option>16:00</option>
+                      <option>17:00</option>
+
+                    </select>
+
+                    <i class="DangerMessage" *ngIf="!rendezVousForm.get('heureRendezVous')?.valid && rendezVousForm.get('heureRendezVous')?.touched">merci de choisir l'heure</i>
+                  </div>
+                </div>
+                <div class="col-md-3">
+
+                </div>
+
+
               </div><!-- Col -->
 
+              <div class="d-flex justify-content-center mt-2">
+                <button class="btn btn-secondary me-2" type="button" awPreviousStep>Retour</button>
+                <button [disabled]="!rendezVousForm.valid" class="btn btn-primary" type="submit">Continuez</button>
+              </div>
+            </form>
+          </aw-wizard-step>
+
+          <aw-wizard-step stepTitle="TERMINER">
+            <div class="text-center">
+              <i data-feather="check-circle" appFeatherIcon class="text-success mt-4 mb-2 icon-xxl"></i>
+              <h3 class="text-muted mb-3">Merci !</h3>
+              <p class="w-75 mx-auto mb-4 text-muted">Votre rendez-vous bien effectuer</p>
             </div>
-
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="mb-3">
-                  <select formControlName="hourRendezVous" class="form-control">
-                    <option>09:00</option>
-                    <option>10:00</option>
-                  </select>
-                   </div>
-              </div><!-- Col -->
-
+            <div class="d-flex justify-content-center mt-2">
+              <button class="btn btn-success" type="button" (click)="finishFunction()">Terminer</button>
             </div>
+          </aw-wizard-step>
 
-            <div class="row">
+        </aw-wizard>
 
-
-            </div>
-
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="mb-3">
-                  <label class="form-label" >Description</label>
-                  <textarea formControlName="description" class="form-control"></textarea>
-                     </div>
-              </div><!-- Col -->
-
-            </div>
-
-
-
-
-            <button type="submit" class="btn btn-primary submit">Enregistrer</button>
-
-          </form>
-               </div>
+      </div>
     </div>
-  </div>
-</div>
+  </div> <!-- col -->
+
+</div> <!-- row -->

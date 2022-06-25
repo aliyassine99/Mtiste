@@ -11,11 +11,22 @@ const routes: Routes = [
     path: '',
     component: BaseComponent,
     children: [
+      {
+        path: "facture",
+        loadChildren: () => import('./facture/facture.module').then(m => m.FactureModule),
 
+
+      },
+      {
+        path: "ordonnance",
+        loadChildren: () => import('./ordonnance/ordonnance.module').then(m => m.OrdonnanceModule),
+
+
+      },
       {
         path: "consultation",
         loadChildren: () => import('./consultation/consultation.module').then(m => m.ConsultationModule),
-        outlet: "home"
+
 
       },
       {

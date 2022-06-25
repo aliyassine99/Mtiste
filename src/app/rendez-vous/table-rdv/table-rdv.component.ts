@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 
 import {ConfirmationService} from 'primeng/api';
 import {Message} from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Patient } from 'src/app/patients/Patient';
 import { PatientsService } from 'src/app/patients/patients.service';
 import { Employee } from 'src/app/patients/Employee';
+import { RendezVousDto } from 'src/app/modals/RendezVousDto';
+import { ConsultationDto } from 'src/app/modals/ConsulationDto';
 
 @Component({
   selector: 'app-table-rdv',
@@ -25,23 +27,28 @@ export class TableRdvComponent implements OnInit {
   employees: Employee[];
   msgs: Message[] = [];
   form: FormGroup;
+  consultationForm: FormGroup;
   closeResult = '';
   editPatient: Patient;
-  showDetailDialog: boolean;
-  displayModal: boolean;
+  modifierRdvModal: boolean;
+  consultationModal: boolean;
+
+  plusDetailRdvModal: boolean;
   term: any;
+
+  @ViewChild("saveConsultationForm") saveConsultationForm: NgForm;
+
+  selectedOne:any = "jbac ";
 
 
   position: string;
 
-  patients: Patient[] = [
+  rendezVous: RendezVousDto[] = [
     {
-      "cin": "AB",
-      "nom": "Marc",
-      "prenom": "Lance",
-      "dateNaissance": new Date("12/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+      id:1,
+      dateRdv: "12-03-2022",
+      heureRdv: "09:00",
+      patient: {nomComplet: "Marc Shut"}
 
 
 
@@ -49,48 +56,21 @@ export class TableRdvComponent implements OnInit {
 
     },
     {
-      "cin": "BQ12",
-      "nom": "Sam",
-      "prenom": "Pace",
-      "dateNaissance": new Date("12/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+      id:2,
+      dateRdv: "12-03-2022",
+      heureRdv: "09:00",
+      patient: {nomComplet: "Sanuel Tadey"}
 
 
 
 
 
-    }, {
-      "cin": "BHG",
-      "nom": "Lucas",
-      "prenom": "Faker",
-      "dateNaissance": new Date("09/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }, {
-      "cin": "OEN",
-      "nom": "Rami",
-      "prenom": "Malek",
-      "dateNaissance": new Date("11/09/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }, {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date("12/12/2012"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+    },
+    {
+      id:3,
+      dateRdv: "12-03-2022",
+      heureRdv: "09:00",
+      patient: {nomComplet: "Sam dee"}
 
 
 
@@ -100,7 +80,7 @@ export class TableRdvComponent implements OnInit {
   ];
 
 
-  constructor(private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
+  constructor(private formBuilder: FormBuilder,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -147,10 +127,35 @@ export class TableRdvComponent implements OnInit {
     }
   }
 
-  showModalDialog(patient: Patient){
-    this.editPatient= patient;
-    this.displayModal= true;
-    this.showDetailDialog= false;
+  showModfierRdvModal(){
+
+    this.modifierRdvModal= true;
+    this.consultationModal= false;
+
+    this.plusDetailRdvModal= false;
+
+
+  }
+
+  showConsultationModal(rdv: RendezVousDto){
+
+    this.modifierRdvModal= false;
+    this.consultationModal= true;
+
+    this.plusDetailRdvModal= false;
+
+    this.selectedOne= rdv.id;
+
+
+  }
+
+
+  showDetailRdvModal(){
+
+    this.modifierRdvModal= false;
+    this.consultationModal= false;
+
+    this.plusDetailRdvModal= true;
 
 
   }
@@ -158,9 +163,17 @@ export class TableRdvComponent implements OnInit {
 
   }
 
-  showDetailPopUp(){
-    this.displayModal=false;
-    this.showDetailDialog= true;
+  onSubmitConsultationForm(){
+
+
+    const consultation: ConsultationDto ={
+      description: this.saveConsultationForm.value.description,
+      rendezVous: {id: this.saveConsultationForm.value.rdv}
+    }
+
+    console.log(consultation);
   }
+
+
 
 }

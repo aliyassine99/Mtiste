@@ -27,11 +27,11 @@
               <tr>
 
                 <th>#</th>
-                <th>C.I.N</th>
-                <th>Name</th>
-                <th>Prenom</th>
-                <th>Date Naissance</th>
-                <th>Telephone</th>
+                <th>Date rendez vous</th>
+                <th>Heurse rendez vous</th>
+
+                <th>Patient</th>
+                <th>Ajouter Consultation</th>
 
                 <th>Operation</th>
 
@@ -39,20 +39,22 @@
             </thead>
             <tbody>
 
-              <tr *ngFor="let patient of patients | filter:term; let i = index">
+              <tr *ngFor="let rdv of rendezVous | filter:term; let i = index">
                 <td>{{ i }}</td>
-                <td>{{patient.cin}}</td>
-                <td>{{patient.nom}}</td>
-                <td>{{patient.prenom}}</td>
-                <td>{{patient.dateNaissance | date: 'dd/MM/yyyy'}}</td>
-                <td>{{patient.telephone}}</td>
+                <td>{{rdv.dateRdv}}</td>
+                <td>{{rdv.heureRdv}}</td>
+                <td>{{ rdv.patient.nomComplet }}</td>
+                <td>
+                  <button pButton pRipple type="button" (click)="showConsultationModal(rdv)" icon="pi pi-eye" class="p-button-rounded p-button-info"></button>
 
+                  </td>
 
         <td>
-          <button pButton pRipple type="button" (click)="showModalDialog(patient)" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
-          <button pButton pRipple type="button" (click)="showDetailPopUp()" icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
+          <button pButton pRipple type="button" (click)="showModfierRdvModal()" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
+          <button pButton pRipple type="button" (click)="showDetailRdvModal()"  icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
            <button pButton pRipple type="button" (click)="confirm1()" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
-    </td>
+
+          </td>
 
 
 
@@ -72,8 +74,8 @@
 
 
 
-
-  <p-dialog header="Modifier les informations" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+<!-- modifier rdv -->
+  <p-dialog header="Modifier les informations" [(visible)]="modifierRdvModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
     [draggable]="false" [resizable]="false">
      <form #editForm="ngForm">
 
@@ -149,11 +151,62 @@
 
     </form>
         <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" class="btn btn-primary" (click)="displayModal=false" label="Enregistrer" class="p-button-text"></p-button>
-            <p-button icon="pi pi-times" (click)="displayModal=false" label="Annuler"></p-button>
+            <p-button icon="pi pi-check" class="btn btn-primary" (click)="modifierRdvModal=false" label="Enregistrer" class="p-button-text"></p-button>
+            <p-button icon="pi pi-times" (click)="modifierRdvModal=false" label="Annuler"></p-button>
         </ng-template>
 </p-dialog>
 
+
+<!-- consultation -->
+
+<p-dialog header="Ajouter une consultation" [(visible)]="consultationModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+[draggable]="false" [resizable]="false">
+ <form (ngSubmit)="onSubmitConsultationForm()" #saveConsultationForm="ngForm" >
+
+  <div class="row">
+
+    <div class="col-md-12"> <div class="mb-3">
+      <input type="hidden" name="rdv" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username"  [(ngModel)]="selectedOne" ngModel>
+
+    </div></div>
+
+    <div class="col-md-12"> <div class="mb-3">
+      <label for="exampleInputUsername1" class="form-label">Description</label>
+   <textarea class="form-control" name="description" ngModel></textarea>
+    </div></div>
+
+  </div>
+
+  <button type="submit"  class="btn btn-primary" >Enregistrer</button><button (click)="consultationModal=false"  class="btn btn-primary" >Fermer</button>
+</form>
+
+</p-dialog>
+
+
+
+
+
+
+<!-- Plus de detail sur la consultation -->
+<p-dialog header="Plus d'informations" [(visible)]="plusDetailRdvModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+[draggable]="false" [resizable]="false">
+ <form #editForm="ngForm">
+
+  <div class="row">
+
+    <div class="col-md-12"> <div class="mb-3">
+     <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur consequatur quas molestiae accusamus eaque maxime amet modi blanditiis enim voluptate! Placeat odio omnis ipsam earum ipsum minima nostrum eveniet. Dolor.</p>
+    </div></div>
+
+  </div>
+
+
+</form>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" class="btn btn-primary" label="Enregistrer" class="p-button-text"></p-button>
+        <p-button icon="pi pi-times" label="Annuler"></p-button>
+    </ng-template>
+</p-dialog>
 </div>
 
 
@@ -170,15 +223,7 @@
 </div>
 
 
-<p-dialog header="Plus de detail" [(visible)]="showDetailDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-    [draggable]="false" [resizable]="false">
 
-    <p>jfdfbjdfbdj</p>
-        <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" class="btn btn-primary" (click)="showDetailDialog=false" label="Enregistrer" class="p-button-text"></p-button>
-            <p-button icon="pi pi-times" (click)="showDetailDialog=false" label="Annuler"></p-button>
-        </ng-template>
-</p-dialog>
 
 
 

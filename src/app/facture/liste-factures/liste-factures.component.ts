@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Patient } from '../Patient';
+
 import {ConfirmationService} from 'primeng/api';
 import {Message} from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
-import { PatientsService } from '../patients.service';
-import { Employee } from '../Employee';
-
+import { Patient } from 'src/app/patients/Patient';
+import { PatientsService } from 'src/app/patients/patients.service';
+import { Employee } from 'src/app/patients/Employee';
 @Component({
-  selector: 'app-liste-patients',
-  templateUrl: './liste-patients.component.html',
+  selector: 'app-liste-factures',
+  templateUrl: './liste-factures.component.html',
   styles: [`
   :host ::ng-deep button {
       margin-right: .25em;
@@ -19,7 +19,7 @@ import { Employee } from '../Employee';
 `],
 providers: [ConfirmationService],
 })
-export class ListePatientsComponent implements OnInit {
+export class ListeFacturesComponent implements OnInit {
 
   employees: Employee[];
   msgs: Message[] = [];
@@ -28,9 +28,7 @@ export class ListePatientsComponent implements OnInit {
   editPatient: Patient;
   showDetailDialog: boolean;
   displayModal: boolean;
-  pageOfItems: Array<any>;
   term: any;
-
 
 
   position: string;
@@ -110,14 +108,7 @@ export class ListePatientsComponent implements OnInit {
     })
 
 
-
-
   }
-
-  onChangePage(pageOfItems: Array<any>) {
-    // update current page of items
-    this.pageOfItems = pageOfItems;
-}
 
   confirm1() {
       this.confirmationService.confirm({
@@ -170,5 +161,6 @@ export class ListePatientsComponent implements OnInit {
     this.displayModal=false;
     this.showDetailDialog= true;
   }
+
 
 }

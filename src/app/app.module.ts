@@ -4,6 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
+
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { LayoutModule } from './views/layout/layout.module';
@@ -59,6 +61,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DialogModule } from 'primeng/dialog';
 import { JwtService } from 'interceptors/jwt';
 import { TableRdvComponent } from './rendez-vous/table-rdv/table-rdv.component';
+import { FactureComponent } from './facture/facture.component';
+import { ListeFacturesComponent } from './facture/liste-factures/liste-factures.component';
 
 
 
@@ -87,7 +91,10 @@ FullCalendarModule.registerPlugins([
     OrdonnanceComponent,
     EditOrdonnanceComponent,
     ListeOrdonnanceComponent,
-    TableRdvComponent
+    TableRdvComponent,
+    FactureComponent,
+    ListeFacturesComponent,
+
 
 
   ],
