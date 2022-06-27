@@ -8,9 +8,9 @@ export interface PatientDto{
      id?: number,
      cin?:string ,
      nomComplet?: string,
-    dateNaissance?: Date,
+      dateNaissance?: Date,
      sexe?: string,
-    email?: number,
+    email?: string,
      telephone?: number,
      adresse?: string,
      rendezVous?: RendezVousDto[]

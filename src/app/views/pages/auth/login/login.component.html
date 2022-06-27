@@ -10,6 +10,9 @@
         <div class="col-md-8 ps-md-0">
           <div class="auth-form-wrapper px-4 py-5">
             <h5 class="text-muted fw-normal mb-4">Bonjour! Connectez vous a Mtiste.</h5>
+            <div *ngIf="error" class="alert alert-danger" role="alert">
+              Nom d'utilisateur ou mot de passe incorrect
+            </div>
             <form class="forms-sample">
            <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Nom d'utilisateur</label>

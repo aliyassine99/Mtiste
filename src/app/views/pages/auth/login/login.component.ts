@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   returnUrl: any;
   username: string;
   password: string;
-
+  error: boolean;
   constructor(private router: Router,
               private loginService: LoginService,
               private route: ActivatedRoute
@@ -54,7 +54,11 @@ export class LoginComponent implements OnInit {
         }
 
       });
+    }, error=>{
+      this.error= true;
+      console.log("error")
     }
+
 
 
     );

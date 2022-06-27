@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { Patient } from '../Patient';
 import {ConfirmationService} from 'primeng/api';
 import {Message} from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, NgForm } from '@angular/forms';
 import { PatientsService } from '../patients.service';
 import { Employee } from '../Employee';
+import { PatientDto } from 'src/app/modals/PatientDto';
+import { FactureDto } from 'src/app/modals/FactureDto';
 
 @Component({
   selector: 'app-liste-patients',
@@ -21,28 +23,41 @@ providers: [ConfirmationService],
 })
 export class ListePatientsComponent implements OnInit {
 
-  employees: Employee[];
+
   msgs: Message[] = [];
   form: FormGroup;
   closeResult = '';
-  editPatient: Patient;
+  editPatient: PatientDto;
+  patientMoreInfos: PatientDto;
   showDetailDialog: boolean;
-  displayModal: boolean;
+  editPatientModal: boolean;
+  factureModal: boolean;
   pageOfItems: Array<any>;
+  patientIdFacture: any;
   term: any;
+
+
+  @ViewChild("patientEditForm") patientEditForm: NgForm;
+
+  @ViewChild("factureForm") factureForm: NgForm;
+
+
 
 
 
   position: string;
 
-  patients: Patient[] = [
+  patients: PatientDto[] = [
     {
-      "cin": "AB",
-      "nom": "Marc",
-      "prenom": "Lance",
-      "dateNaissance": new Date("12/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+      id:1,
+      cin: "AB",
+      nomComplet:"Amine merdi",
+      dateNaissance: new Date("12/04/2022"),
+      sexe: "Masculin",
+      email:"amin@gmail.com",
+      telephone: 923469828,
+      adresse: "Adresse",
+
 
 
 
@@ -50,54 +65,36 @@ export class ListePatientsComponent implements OnInit {
 
     },
     {
-      "cin": "BQ12",
-      "nom": "Sam",
-      "prenom": "Pace",
-      "dateNaissance": new Date("12/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+      id:2,
+      cin: "123BH",
+      nomComplet:"Amine merdi",
+      dateNaissance: new Date("12/04/2022"),
+      sexe: "Feminin",
+      email:"amin@gmail.com",
+      telephone: 923469828,
+      adresse: "Adresse"
 
 
 
 
 
-    }, {
-      "cin": "BHG",
-      "nom": "Lucas",
-      "prenom": "Faker",
-      "dateNaissance": new Date("09/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+    },
+    {
+      id:3,
+      cin: "QWER",
+      nomComplet:"Amine merdi",
+      dateNaissance: new Date("12/04/2022"),
+      sexe: "Masculin",
+      email:"amin@gmail.com",
+      telephone: 923469828,
+      adresse: "Adresse"
 
 
 
 
 
-    }, {
-      "cin": "OEN",
-      "nom": "Rami",
-      "prenom": "Malek",
-      "dateNaissance": new Date("11/09/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+    },
 
-
-
-
-
-    }, {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date("12/12/2012"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
   ];
 
 
@@ -105,9 +102,6 @@ export class ListePatientsComponent implements OnInit {
 
   ngOnInit() {
     this.primengConfig.ripple = true;
-    this.patientService.getEmployees().subscribe(element=>{
-      this.employees = element;
-    })
 
 
 
@@ -155,20 +149,44 @@ export class ListePatientsComponent implements OnInit {
     }
   }
 
-  showModalDialog(patient: Patient){
+  showEditPatientModal(patient: PatientDto){
     this.editPatient= patient;
-    this.displayModal= true;
+    this.editPatientModal= true;
     this.showDetailDialog= false;
+    this.factureModal = false;
+    this.editPatient= patient;
 
 
   }
-  onUpdateEmloyee(patient: Patient){
 
-  }
-
-  showDetailPopUp(){
-    this.displayModal=false;
+  showMoreInfos(patient: PatientDto){
+    this.editPatientModal=false;
     this.showDetailDialog= true;
+    this.factureModal = false;
+    this.patientMoreInfos= patient;
   }
+
+  showFactureModule(patient: PatientDto){
+    this.editPatientModal=false;
+    this.showDetailDialog= false;
+    this.factureModal = true;
+    this.patientIdFacture= patient.id;
+  }
+
+  onAddFacture(){
+
+    const facturePatient: FactureDto ={
+      id:1,
+      montant: this.factureForm.value.montant,
+      patient:{id: this.factureForm.value.id}
+    }
+
+    console.log(facturePatient);
+
+  }
+
+  onUpdatePatient(updatedPatient: PatientDto){console.log(updatedPatient);}
+
+
 
 }

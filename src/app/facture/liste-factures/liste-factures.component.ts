@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 
 import {ConfirmationService} from 'primeng/api';
 import {Message} from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, NgForm } from '@angular/forms';
 import { Patient } from 'src/app/patients/Patient';
 import { PatientsService } from 'src/app/patients/patients.service';
 import { Employee } from 'src/app/patients/Employee';
+import { FactureDto } from 'src/app/modals/FactureDto';
 @Component({
   selector: 'app-liste-factures',
   templateUrl: './liste-factures.component.html',
@@ -25,71 +26,26 @@ export class ListeFacturesComponent implements OnInit {
   msgs: Message[] = [];
   form: FormGroup;
   closeResult = '';
-  editPatient: Patient;
-  showDetailDialog: boolean;
+  editFacture: FactureDto;
+  modifierFactureModal: boolean;
+  showDetailFacture: boolean;
   displayModal: boolean;
   term: any;
 
+  @ViewChild("editFactureForm") editFactureForm: NgForm;
 
   position: string;
 
-  patients: Patient[] = [
+  factures: FactureDto[] = [
     {
-      "cin": "AB",
-      "nom": "Marc",
-      "prenom": "Lance",
-      "dateNaissance": new Date("12/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+      id:1,
+      montant:200,
+       patient:{
+        id:2,
+        nomComplet:"Amine Daamir",
 
 
-
-
-
-    },
-    {
-      "cin": "BQ12",
-      "nom": "Sam",
-      "prenom": "Pace",
-      "dateNaissance": new Date("12/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }, {
-      "cin": "BHG",
-      "nom": "Lucas",
-      "prenom": "Faker",
-      "dateNaissance": new Date("09/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }, {
-      "cin": "OEN",
-      "nom": "Rami",
-      "prenom": "Malek",
-      "dateNaissance": new Date("11/09/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }, {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date("12/12/2012"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+      }
 
 
 
@@ -127,10 +83,10 @@ export class ListeFacturesComponent implements OnInit {
   }
 
   open(patient:Patient,content:any) {
-    this.editPatient= patient;
+
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
-      this.editPatient= patient;
+
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
@@ -146,10 +102,11 @@ export class ListeFacturesComponent implements OnInit {
     }
   }
 
-  showModalDialog(patient: Patient){
-    this.editPatient= patient;
-    this.displayModal= true;
-    this.showDetailDialog= false;
+  showModfierFactureModal(facture: FactureDto){
+    this.editFacture= facture;
+    this.modifierFactureModal= true;
+    this.showDetailFacture= false;
+    console.log(this.editFacture.montant);
 
 
   }
@@ -157,9 +114,13 @@ export class ListeFacturesComponent implements OnInit {
 
   }
 
-  showDetailPopUp(){
-    this.displayModal=false;
-    this.showDetailDialog= true;
+  showDetailFactureModal(){
+    this.modifierFactureModal=false;
+    this.showDetailFacture= true;
+  }
+
+  onSubmitConsultationForm(facture:FactureDto){
+    console.log(facture);
   }
 
 

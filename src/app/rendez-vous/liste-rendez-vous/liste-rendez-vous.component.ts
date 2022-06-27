@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { EventApi } from '@fullcalendar/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationService, Message, PrimeNGConfig } from 'primeng/api';
+import { RendezVousDto } from 'src/app/modals/RendezVousDto';
 import { DisplayRdv } from '../DisplayRdv';
 import { RendezVousService } from '../rendez-vous.service';
 
@@ -25,8 +26,8 @@ export class ListeRendezVousComponent  {
 
   currentEvents: EventApi[] = [];
 
-  newEv: RendezVous[]= [];
-  oldEve: RendezVous[]= [];
+  newEv: RendezVousDto[]= [];
+  oldEve: RendezVousDto[]= [];
 
   newEvents: DisplayRdv[]= [];
   msgs: Message[] = [];
@@ -49,7 +50,7 @@ export class ListeRendezVousComponent  {
   ngOnInit() {
 
    this.rendezVousService.getRendezVous().subscribe(
-    (response: RendezVous[]) =>{
+    (response: RendezVousDto[]) =>{
 
       this.newEv = response;
       console.log(this.newEv);
@@ -94,16 +95,6 @@ export class ListeRendezVousComponent  {
 
    this.oldEve = [{
 
-      date: new Date("2022-06-11 14:36:11")
-    },{
-
-      date: new Date("2022-06-11 14:36:11")
-    },{
-
-      date: new Date("2022-06-11 14:36:11")
-    },{
-
-      date: new Date("2022-06-12T14:36:11")
 
 
     }]

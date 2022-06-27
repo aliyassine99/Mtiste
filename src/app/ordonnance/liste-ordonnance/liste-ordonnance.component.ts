@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 
 import {ConfirmationService} from 'primeng/api';
 import {Message} from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, NgForm } from '@angular/forms';
 import { Patient } from 'src/app/patients/Patient';
 import { PatientsService } from 'src/app/patients/patients.service';
 import { Employee } from 'src/app/patients/Employee';
+import { OrdonnanceDto } from 'src/app/modals/OrdonnanceDto';
+
 
 @Component({
   selector: 'app-liste-ordonnance',
@@ -25,22 +27,22 @@ export class ListeOrdonnanceComponent implements OnInit {
   msgs: Message[] = [];
   form: FormGroup;
   closeResult = '';
-  editPatient: Patient;
+  editOrdonnance: OrdonnanceDto;
   showDetailDialog: boolean;
   displayModal: boolean;
   term: any;
 
+  @ViewChild("editOrdonnanceForm") editOrdonnanceForm: NgForm;
+
 
   position: string;
 
-  patients: Patient[] = [
+  ordonnances: OrdonnanceDto[] = [
     {
-      "cin": "AB",
-      "nom": "Marc",
-      "prenom": "Lance",
-      "dateNaissance": new Date("12/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+      id:1,
+      description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, maxime. A non repudiandae, vero saepe delectus impedit nemo sit error pariatur praesentium illo dolor nulla animi, earum ipsa ab voluptates.",
+      rendezVous: {
+        id:1,patient:{nomComplet:"Mohamed"}}
 
 
 
@@ -48,54 +50,28 @@ export class ListeOrdonnanceComponent implements OnInit {
 
     },
     {
-      "cin": "BQ12",
-      "nom": "Sam",
-      "prenom": "Pace",
-      "dateNaissance": new Date("12/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+      id:2,
+      description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, maxime. A non repudiandae, vero saepe delectus impedit nemo sit error pariatur praesentium illo dolor nulla animi, earum ipsa ab voluptates.",
+      rendezVous: {
+        id:2,patient:{nomComplet:"Samir"}}
 
 
 
 
 
-    }, {
-      "cin": "BHG",
-      "nom": "Lucas",
-      "prenom": "Faker",
-      "dateNaissance": new Date("09/04/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+    },
+    {
+      id:3,
+      description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, maxime. A non repudiandae, vero saepe delectus impedit nemo sit error pariatur praesentium illo dolor nulla animi, earum ipsa ab voluptates.",
+      rendezVous: {
+        id:1,patient:{nomComplet:"Kamal"}}
 
 
 
 
 
-    }, {
-      "cin": "OEN",
-      "nom": "Rami",
-      "prenom": "Malek",
-      "dateNaissance": new Date("11/09/2022"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
+    },
 
-
-
-
-
-    }, {
-      "cin": "BQ12",
-      "nom": "Douglas",
-      "prenom": "Pace",
-      "dateNaissance": new Date("12/12/2012"),
-      "telephone": 923469828,
-      "email": "douglas@gmail"
-
-
-
-
-
-    }
   ];
 
 
@@ -127,10 +103,10 @@ export class ListeOrdonnanceComponent implements OnInit {
   }
 
   open(patient:Patient,content:any) {
-    this.editPatient= patient;
+
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
-      this.editPatient= patient;
+
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
@@ -146,8 +122,8 @@ export class ListeOrdonnanceComponent implements OnInit {
     }
   }
 
-  showModalDialog(patient: Patient){
-    this.editPatient= patient;
+  showEditOrdonnanceModal(ordonnance: OrdonnanceDto){
+    this.editOrdonnance= ordonnance;
     this.displayModal= true;
     this.showDetailDialog= false;
 
@@ -160,6 +136,10 @@ export class ListeOrdonnanceComponent implements OnInit {
   showDetailPopUp(){
     this.displayModal=false;
     this.showDetailDialog= true;
+  }
+
+  onUpdateOrdonnance(ordonnance: OrdonnanceDto){
+    console.log(ordonnance);
   }
 
 }

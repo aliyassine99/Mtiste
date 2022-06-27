@@ -29,7 +29,7 @@ export class TableRdvComponent implements OnInit {
   form: FormGroup;
   consultationForm: FormGroup;
   closeResult = '';
-  editPatient: Patient;
+  editRendezVous: RendezVousDto;
   modifierRdvModal: boolean;
   consultationModal: boolean;
 
@@ -37,8 +37,10 @@ export class TableRdvComponent implements OnInit {
   term: any;
 
   @ViewChild("saveConsultationForm") saveConsultationForm: NgForm;
+  @ViewChild("rendezVousEditForm") rendezVousEditForm: NgForm;
 
-  selectedOne:any = "jbac ";
+
+  selectedOne:any = "jbac";
 
 
   position: string;
@@ -84,9 +86,6 @@ export class TableRdvComponent implements OnInit {
 
   ngOnInit() {
     this.primengConfig.ripple = true;
-    this.patientService.getEmployees().subscribe(element=>{
-      this.employees = element;
-    })
 
 
   }
@@ -108,10 +107,10 @@ export class TableRdvComponent implements OnInit {
   }
 
   open(patient:Patient,content:any) {
-    this.editPatient= patient;
+
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
-      this.editPatient= patient;
+
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
@@ -127,12 +126,14 @@ export class TableRdvComponent implements OnInit {
     }
   }
 
-  showModfierRdvModal(){
+  showModfierRdvModal(rdv: RendezVousDto){
 
     this.modifierRdvModal= true;
     this.consultationModal= false;
 
     this.plusDetailRdvModal= false;
+
+    this.editRendezVous= rdv;
 
 
   }
@@ -172,6 +173,12 @@ export class TableRdvComponent implements OnInit {
     }
 
     console.log(consultation);
+  }
+
+
+  onUpdateRendezVous(updatedRdv: RendezVousDto){
+
+    console.log(updatedRdv);
   }
 
 

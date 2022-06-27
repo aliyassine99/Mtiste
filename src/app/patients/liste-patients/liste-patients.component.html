@@ -28,13 +28,13 @@
 
                 <th>#</th>
                 <th>C.I.N</th>
-                <th>Name</th>
-                <th>Prenom</th>
-                <th>Date Naissance</th>
+                <th>Nom Complet</th>
+                <th>Email</th>
+
                 <th>Telephone</th>
 
+                <th>Ajouter une facture</th>
                 <th>Operation</th>
-
               </tr>
             </thead>
             <tbody>
@@ -42,15 +42,17 @@
               <tr *ngFor="let patient of patients | filter:term; let i = index">
                 <td>{{ i }}</td>
                 <td>{{patient.cin}}</td>
-                <td>{{patient.nom}}</td>
-                <td>{{patient.prenom}}</td>
-                <td>{{patient.dateNaissance | date: 'dd/MM/yyyy'}}</td>
+                <td>{{patient.nomComplet}}</td>
+                <td>{{patient.email}}</td>
                 <td>{{patient.telephone}}</td>
 
+                <td>
+                  <button pButton pRipple type="button" (click)="showFactureModule(patient)" icon="pi pi-dollar" class="p-button-rounded p-button-secondary"></button>
+         </td>
 
         <td>
-          <button pButton pRipple type="button" (click)="showModalDialog(patient)" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
-          <button pButton pRipple type="button" (click)="showDetailPopUp()" icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
+          <button pButton pRipple type="button" (click)="showEditPatientModal(patient)" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
+          <button pButton pRipple type="button" (click)="showMoreInfos(patient)" icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
            <button pButton pRipple type="button" (click)="confirm1()" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
     </td>
 
@@ -73,85 +75,100 @@
 
 
 
-  <p-dialog header="Modifier les informations" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+  <p-dialog header="Modifier les informations" [(visible)]="editPatientModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
     [draggable]="false" [resizable]="false">
-     <form #editForm="ngForm">
-
-      <div class="row">
-
-        <div class="col-md-12"> <div class="mb-3">
-          <label for="exampleInputUsername1" class="form-label">CIN</label>
-          <input type="text" name="cin" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username" ngModel="{{editPatient?.cin}}" >
-
-        </div></div>
-
-      </div>
-      <div class="row">
-
-        <div class="col-md-6"> <div class="mb-3">
-          <label for="exampleInputUsername1" class="form-label">Prenom</label>
-          <input type="text" name="prenom" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username" ngModel="{{editPatient?.prenom}}">
-
-        </div></div>
-        <div class="col-md-6"> <div class="mb-3">
-          <label for="exampleInputUsername1" class="form-label">Nom</label>
-          <input type="text" class="form-control" name="nom" id="exampleInputUsername1" autocomplete="off" placeholder="Username" ngModel="{{editPatient?.nom}}">
-
-        </div></div>
-      </div>
+    <form class="mt-4" #patientEditForm="ngForm">
 
 
       <div class="row">
+                <div class="col-sm-12">
+          <div class="mb-3">
 
-        <div class="col-md-6"> <div class="mb-3">
-          <label for="exampleInputUsername1" class="form-label">Date Naissance</label>
-          <input type="date" name="dateNaissance" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username" ngModel="{{editPatient?.dateNaissance}}">
+            <input type="hidden" ngModel="{{ editPatient?.id}}" class="form-control" name="id" placeholder="Entrer Cin" ngModel="">
 
-        </div></div>
-        <div class="col-md-6"> <div class="mb-3">
-          <label for="exampleInputUsername1" class="form-label">Genre</label>
+          </div>
+        </div><!-- Col -->
+        <div class="col-sm-12">
+          <div class="mb-3">
+            <label class="form-label">CIN</label>
+            <input type="text" ngModel="{{ editPatient?.cin}}" class="form-control" name="cin" placeholder="Entrer Cin" ngModel="">
 
-          <select name="sexe" class="form-control" ngModel="{{editPatient?.sexe}}">
-            <option>Masculin</option>
-            <option>Feminin</option>
-          </select>
+          </div>
+        </div><!-- Col -->
 
-       </div></div>
       </div>
 
 
 
       <div class="row">
+        <div class="col-sm-12">
+          <div class="mb-3">
+            <label class="form-label">Nom Complet</label>
+            <input ngModel="{{ editPatient?.nomComplet}}" class="form-control" name="nomComplet" type="text"  placeholder="Entrer le nom et prenom" ngModel>
 
-        <div class="col-md-6"> <div class="mb-3">
-          <label for="exampleInputUsername1" class="form-label">Telephone</label>
-          <input type="number" name="telephone" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="+212 ------" ngModel="{{editPatient?.telephone}}">
+          </div>
+        </div>
 
-        </div></div>
-        <div class="col-md-6"> <div class="mb-3">
-          <label for="exampleInputUsername1" class="form-label">Email</label>
-          <input type="text" name="email" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username" ngModel="{{editPatient?.email}}">
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label">Date de Naissance</label>
+            <input ngModel="{{ editPatient?.dateNaissance}}" name="dateNaissance" type="date" class="form-control" ngModel>
+           </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label">Sexe</label>
+            <select class="form-control" ngModel="{{ editPatient?.sexe}}" name="sexe" ngModel>
+              <option >Homme</option>
+              <option>Femme</option>
+            </select>
 
-        </div></div>
+              </div>
+        </div>
       </div>
 
 
 
       <div class="row">
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input ngModel="{{ editPatient?.email}}" name="email"  type="email" class="form-control" placeholder="Entrer l'adresse mail" ngModel>
 
-        <div class="col-md-12"> <div class="mb-3">
-          <label for="exampleInputUsername1" class="form-label">Adresse</label>
-          <input type="text" name="adresse" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="+212 ------" ngModel="{{editPatient?.adresse}}">
+          </div>
+        </div><!-- Col -->
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label">Telephone</label>
+            <input ngModel="{{ editPatient?.telephone}}" name="telephone" type="number" class="form-control" placeholder="+212 ----" ngModel>
 
-        </div></div>
+          </div>
+        </div><!-- Col -->
+      </div>
+
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="mb-3">
+            <label class="form-label">Adresse</label>
+            <input ngModel="{{ editPatient?.adresse}}" name="adresse" type="text" class="form-control" placeholder="Entrer l'adresse" ngModel>
+
+
+          </div>
+
+        </div><!-- Col -->
 
       </div>
+      <div class="d-flex justify-content-center mt-2">
+        <button type="submit" (click)="onUpdatePatient(patientEditForm.value)" class="btn btn-success">Enregistrer</button>
+        <button (click)="editPatientModal=false" class="btn btn-warning">Annuler</button>
+      </div>
+
 
     </form>
-        <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" class="btn btn-primary" (click)="displayModal=false" label="Enregistrer" class="p-button-text"></p-button>
-            <p-button icon="pi pi-times" (click)="displayModal=false" label="Annuler"></p-button>
-        </ng-template>
+
 </p-dialog>
 
 </div>
@@ -170,16 +187,80 @@
 </div>
 
 
-<p-dialog header="Plus de detail" [(visible)]="showDetailDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+<p-dialog header="Plus de d'informations" [(visible)]="showDetailDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
     [draggable]="false" [resizable]="false">
 
+<div class="row">
+  <div class="col-12"><b>CIN: {{patientMoreInfos?.cin}}</b></div>
+    <hr>
+</div>
 
-        <ng-template pTemplate="footer">
-            <p-button icon="pi pi-check" class="btn btn-primary" (click)="showDetailDialog=false" label="Enregistrer" class="p-button-text"></p-button>
-            <p-button icon="pi pi-times" (click)="showDetailDialog=false" label="Annuler"></p-button>
-        </ng-template>
+<div class="row">
+  <div class="col-12"><b>Nom Complet: </b>{{patientMoreInfos?.nomComplet}}</div>
+    <hr>
+</div>
+<div class="row">
+  <div class="col-12"><b>Date naissance: </b>{{patientMoreInfos?.dateNaissance}}</div>
+    <hr>
+</div>
+<div class="row">
+  <div class="col-12"><b>Sexe: </b>{{patientMoreInfos?.sexe}}</div>
+    <hr>
+</div>
+<div class="row">
+  <div class="col-12"><b>Email: </b>{{patientMoreInfos?.email}}</div>
+    <hr>
+</div>
+<div class="row">
+  <div class="col-12"><b>Telephone: </b>{{patientMoreInfos?.telephone}}</div>
+    <hr>
+</div>
+<div class="row">
+  <div class="col-12"><b>Adresse: </b>{{patientMoreInfos?.adresse}}</div>
+    <hr>
+</div>
+
 </p-dialog>
 
+
+<!-- Ajouter facture module -->
+
+
+<p-dialog header="Ajouter une facture" [(visible)]="factureModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+[draggable]="false" [resizable]="false">
+<form class="mt-4" #factureForm="ngForm">
+
+
+  <div class="row">
+            <div class="col-sm-12">
+      <div class="mb-3">
+
+        <input type="hidden" name="id" class="form-control" name="id" placeholder="Entrer Cin" ngModel="{{patientIdFacture}}" ngModel>
+
+      </div>
+    </div><!-- Col -->
+    <div class="col-sm-12">
+      <div class="mb-3">
+        <label class="form-label">Montant</label>
+        <input type="number" min="200" class="form-control" name="montant" placeholder="Entrer le montant" ngModel="">
+
+      </div>
+    </div><!-- Col -->
+
+  </div>
+
+
+
+
+  <div class="d-flex justify-content-center mt-2">
+    <button type="submit" (click)="onAddFacture()" class="btn btn-secondary">Enregistrer</button>
+    <button (click)="factureModal=false" class="btn btn-warning">Annuler</button>
+  </div>
+
+
+</form>
+
+</p-dialog>
 
 
 
