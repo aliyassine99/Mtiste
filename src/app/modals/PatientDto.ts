@@ -1,19 +1,22 @@
+import { FactureDto } from "./FactureDto";
 import { RendezVousDto } from "./RendezVousDto";
 
 export interface PatientDto{
 
 
-
-
-     id?: number,
+   id?: number,
      cin?:string ,
-     nomComplet?: string,
-      dateNaissance?: Date,
-     sexe?: string,
-    email?: string,
-     telephone?: number,
-     adresse?: string,
-     rendezVous?: RendezVousDto[]
+     nomPrenom?: string,
+    sexe?: string,
+     dateNaissance?: Date,
+     email?: string,
+    telephone?: number,
+    adresse?: string,
+    rendezVous?: RendezVousDto[]
+    factures?: FactureDto[];
+
+
+
 
 
 

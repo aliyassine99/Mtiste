@@ -1,15 +1,20 @@
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Route, Router } from '@angular/router';
 
 import { WizardComponent as BaseWizardComponent } from 'angular-archwizard'
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { PatientDto } from 'src/app/modals/PatientDto';
 import { RendezVousDto } from 'src/app/modals/RendezVousDto';
 import { Patient } from 'src/app/patients/Patient';
+import { RendezVousService } from '../rendez-vous.service';
 
 @Component({
   selector: 'app-edit-rendez-vous',
   templateUrl: './edit-rendez-vous.component.html',
-  styleUrls: ['./edit-rendez-vous.component.scss']
+  styleUrls: ['./edit-rendez-vous.component.scss'],
+  providers: [MessageService]
 })
 export class EditRendezVousComponent implements OnInit {
 
@@ -18,14 +23,20 @@ export class EditRendezVousComponent implements OnInit {
   rendezVousForm: FormGroup;
 
   savedPatient: Patient;
+
   savedRendezVous: RendezVousDto;
 
   isForm1Submitted: Boolean;
   isForm2Submitted: Boolean;
 
+  rdvExisteDeja: boolean;
+  rdvExisteDejaHeure: boolean;
+
+
+
   @ViewChild('wizardForm') wizardForm: BaseWizardComponent;
 
-  constructor(public formBuilder: FormBuilder) { }
+  constructor(public formBuilder: FormBuilder, private rdvService: RendezVousService, private route: Router,private messageService: MessageService, private primengConfig: PrimeNGConfig) { }
 
   ngOnInit(): void {
 
@@ -34,7 +45,7 @@ export class EditRendezVousComponent implements OnInit {
      */
     this.patientForm = this.formBuilder.group({
       cin: new FormControl("",[Validators.required]),
-      nomComplet: new FormControl("",[Validators.required]),
+      nomPrenom: new FormControl("",[Validators.required]),
       dateNaissance: new FormControl("",[Validators.required]),
       sexe: new FormControl("",[Validators.required]),
       email: new FormControl("",[Validators.required, Validators.email]),
@@ -43,12 +54,14 @@ export class EditRendezVousComponent implements OnInit {
 
         });
 
+        this.primengConfig.ripple = true;
+
     /**
      * formw value validation
      */
     this.rendezVousForm = this.formBuilder.group({
-      dateRendezVous : ['', [Validators.required]],
-      heureRendezVous : ['', Validators.required]
+      dateVisite : ['', [Validators.required]],
+      heureVisite : ['', Validators.required]
     });
 
     this.isForm1Submitted = false;
@@ -61,7 +74,8 @@ export class EditRendezVousComponent implements OnInit {
    * Wizard finish function
    */
   finishFunction() {
-    alert('Successfully Completed');
+    this.route.navigate(["/rendez-vous/rendez-vous"]);
+    this.messageService.add({severity:'success', summary: 'Succes', detail: 'Rendez vous bien ajouté'});
   }
 
   /**
@@ -103,45 +117,54 @@ export class EditRendezVousComponent implements OnInit {
   onSubmit(){
 
 
-    /*const savePatient:PatientDto  = new PatientDto(undefined,
-      this.patientForm.controls["cin"].value,
-      this.patientForm.controls["nomComplet"].value,
-      this.patientForm.controls["dateNaissance"].value,
-      this.patientForm.controls["sexe"].value,
-      this.patientForm.controls["mail"].value,
-      this.patientForm.controls["telephone"].value,
-      this.patientForm.controls["adresse"].value
-      );*/
-      let json=JSON.stringify(this.patientForm.value);
-this.savedPatient=JSON.parse(json);
 
 
-const model: PatientDto={
-  cin:this.patientForm.controls["cin"].value,
-  nomComplet:this.patientForm.controls["nomComplet"].value,
-  dateNaissance:this.patientForm.controls["dateNaissance"].value,
-  sexe:this.patientForm.controls["sexe"].value,
-  email:this.patientForm.controls["email"].value,
-  telephone:this.patientForm.controls["telephone"].value,
-  adresse:this.patientForm.controls["adresse"].value,
-  rendezVous:[{
-    dateRdv: this.rendezVousForm.controls["dateRendezVous"].value,
-    heureRdv: this.rendezVousForm.controls["heureRendezVous"].value,
+
+const patientRdv: PatientDto = {
+  "cin":this.patientForm.controls["cin"].value,
+  "nomPrenom":this.patientForm.controls["nomPrenom"].value,
+  "dateNaissance":this.patientForm.controls["dateNaissance"].value,
+  "sexe":this.patientForm.controls["sexe"].value,
+  "email":this.patientForm.controls["email"].value,
+  "telephone":this.patientForm.controls["telephone"].value,
+  "adresse":this.patientForm.controls["adresse"].value,
+  "rendezVous":[{
+    "dateVisite": this.rendezVousForm.controls["dateVisite"].value,
+    "heureVisite": this.rendezVousForm.controls["heureVisite"].value,
   }]
 };
 
+let object = JSON.stringify(patientRdv);
+console.log(object);
 
-console.log(model);
+this.rdvService.addRendezVousToPatient(patientRdv).subscribe(
+  response =>{
+    console.log(response);
+  }, (error)=>{
+    if(error.error){
+      this.rdvExisteDeja = true;
+    }
 
-
-
-
-
-
-
-
+    console.log(error.error);
 
   }
+);
+
+}
+
+
+onConfirm() {
+    this.messageService.clear('c');
+}
+
+onReject() {
+    this.messageService.clear('c');
+}
+
+clear() {
+    this.messageService.clear();
+}
+
 
 
 

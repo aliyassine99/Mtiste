@@ -37,7 +37,7 @@
 
               <tr *ngFor="let ordonnance of ordonnances | filter:term; let i = index">
                 <td>{{ i }}</td>
-                <td>{{ordonnance.rendezVous.patient.nomComplet}}</td>
+                <td>{{ordonnance.consultation.rendezVous.patient.nomPrenom}}</td>
                 <td>{{ordonnance.description | slice:0:20}}...</td>
 
 
@@ -46,8 +46,8 @@
 
         <td>
           <button pButton pRipple type="button" (click)="showEditOrdonnanceModal(ordonnance)" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
-          <button pButton pRipple type="button" (click)="showDetailPopUp()" icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
-           <button pButton pRipple type="button" (click)="confirm1()" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+          <button pButton pRipple type="button" (click)="showDetailPopUp(ordonnance)" icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
+           <button pButton pRipple type="button" (click)="confirm1(ordonnance.id)" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
     </td>
 
 
@@ -88,7 +88,7 @@
 
 
       <div class="d-flex justify-content-center mt-2">
-        <button type="submit" (click)="onUpdateOrdonnance(editOrdonnanceForm.value)" class="btn btn-success">Enregistrer</button>
+        <button type="submit" (click)="onUpdateOrdonnance(editOrdonnanceForm.value,editOrdonnance.id)" class="btn btn-success">Enregistrer</button>
         <button (click)="displayModal=false" class="btn btn-warning">Annuler</button>
       </div>
 
@@ -107,7 +107,10 @@
 <p-dialog header="Plus d'informations" [(visible)]="showDetailDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
     [draggable]="false" [resizable]="false">
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, maxime. A non repudiandae, vero saepe delectus impedit nemo sit error pariatur praesentium illo dolor nulla animi, earum ipsa ab voluptates.</p>
+    <div class="row">
+      <div class="col-12"><b>Description: </b><br>{{ordonnanceMoreDetail?.description}}</div>
+        <hr>
+    </div>
 
 </p-dialog>
 

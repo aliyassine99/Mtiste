@@ -10,6 +10,7 @@ import { Patient } from 'src/app/patients/Patient';
 import { PatientsService } from 'src/app/patients/patients.service';
 import { Employee } from 'src/app/patients/Employee';
 import { OrdonnanceDto } from 'src/app/modals/OrdonnanceDto';
+import { OrdonnanceService } from '../ordonnance.service';
 
 
 @Component({
@@ -32,61 +33,37 @@ export class ListeOrdonnanceComponent implements OnInit {
   displayModal: boolean;
   term: any;
 
+  ordonnanceMoreDetail: OrdonnanceDto;
+
   @ViewChild("editOrdonnanceForm") editOrdonnanceForm: NgForm;
 
 
   position: string;
 
   ordonnances: OrdonnanceDto[] = [
-    {
-      id:1,
-      description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, maxime. A non repudiandae, vero saepe delectus impedit nemo sit error pariatur praesentium illo dolor nulla animi, earum ipsa ab voluptates.",
-      rendezVous: {
-        id:1,patient:{nomComplet:"Mohamed"}}
-
-
-
-
-
-    },
-    {
-      id:2,
-      description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, maxime. A non repudiandae, vero saepe delectus impedit nemo sit error pariatur praesentium illo dolor nulla animi, earum ipsa ab voluptates.",
-      rendezVous: {
-        id:2,patient:{nomComplet:"Samir"}}
-
-
-
-
-
-    },
-    {
-      id:3,
-      description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, maxime. A non repudiandae, vero saepe delectus impedit nemo sit error pariatur praesentium illo dolor nulla animi, earum ipsa ab voluptates.",
-      rendezVous: {
-        id:1,patient:{nomComplet:"Kamal"}}
-
-
-
-
-
-    },
 
   ];
 
 
-  constructor(private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
+  constructor(private ordonnanceService:OrdonnanceService, private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
 
   ngOnInit() {
+
+    console.log(this.ordonnances);
     this.primengConfig.ripple = true;
-    this.patientService.getEmployees().subscribe(element=>{
-      this.employees = element;
-    })
+
+    this.ordonnanceService.getOrdonnances().subscribe(
+      (response: OrdonnanceDto[]) => {
+       this.ordonnances = response;
+       console.log(response);
+      }
+    )
+
 
 
   }
 
-  confirm1() {
+  confirm1(ordonnanceId: any) {
       this.confirmationService.confirm({
           message: 'Êtes-vous sûr de vouloir continuer ?',
           header: 'Confirmation',
@@ -94,6 +71,11 @@ export class ListeOrdonnanceComponent implements OnInit {
           rejectLabel:"Non",
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
+            this.ordonnanceService.deleteOrdonnance(ordonnanceId).subscribe(
+              (element)=>{
+                console.log(element);
+              }
+            );
               this.msgs = [{severity:'success', summary:'Confirmé', detail:'Les données bien supprimé'}];
           },
           reject: () => {
@@ -133,13 +115,18 @@ export class ListeOrdonnanceComponent implements OnInit {
 
   }
 
-  showDetailPopUp(){
+  showDetailPopUp(ordonnance: OrdonnanceDto){
     this.displayModal=false;
     this.showDetailDialog= true;
+    this.ordonnanceMoreDetail = ordonnance;
   }
 
-  onUpdateOrdonnance(ordonnance: OrdonnanceDto){
-    console.log(ordonnance);
+  onUpdateOrdonnance(ordonnance: OrdonnanceDto, ordonnanceId: any){
+    this.ordonnanceService.updateOrdonnace(ordonnance,ordonnanceId).subscribe(
+      (response: OrdonnanceDto)=>{
+        console.log(response);
+      }
+    );
   }
 
 }

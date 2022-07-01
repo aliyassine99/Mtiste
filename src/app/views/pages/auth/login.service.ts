@@ -18,5 +18,5 @@ sendAuthentication(username: string, password: string): Observable<any>{
   //let user= {"username": username, "password": password}
 
   let user: Utilisateur = new Utilisateur(username,password);
-    return this.http.post(`${this.apiUrl}/api/login`, user , {responseType: "text"})
+    return this.http.post(`${this.apiUrl}/login`, user , {responseType: "text"})
   }}

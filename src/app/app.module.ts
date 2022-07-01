@@ -35,6 +35,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 
 
+
+
+
 import { ConfirmPopupModule } from "primeng/confirmpopup";
 import { ToastModule } from "primeng/toast";
 import { ButtonModule } from "primeng/button";
@@ -63,6 +66,11 @@ import { JwtService } from 'interceptors/jwt';
 import { TableRdvComponent } from './rendez-vous/table-rdv/table-rdv.component';
 import { FactureComponent } from './facture/facture.component';
 import { ListeFacturesComponent } from './facture/liste-factures/liste-factures.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+
+
+
+import {RippleModule} from 'primeng/ripple';
 
 
 
@@ -115,7 +123,10 @@ FullCalendarModule.registerPlugins([
     NgSelectModule,
     FullCalendarModule,
     CalendarModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    SweetAlert2Module,
+    ToastModule,
+    RippleModule
 
 
 

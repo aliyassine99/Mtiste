@@ -1,12 +1,15 @@
 import { Patient } from "../patients/Patient";
+import { ConsultationDto } from "./ConsulationDto";
 import { PatientDto } from "./PatientDto";
 
 export interface RendezVousDto {
 
      id?: number,
-     dateRdv?: string,
-     heureRdv?: string,
-     patient?: PatientDto
+     dateVisite?: string,
+     heureVisite?: string,
+     etat?: string;
+     patient?: PatientDto,
+     consultation?: ConsultationDto
 
 
 

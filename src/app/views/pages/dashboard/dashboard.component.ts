@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { PatientDto } from 'src/app/modals/PatientDto';
+import { RendezVousDto } from 'src/app/modals/RendezVousDto';
+import { PatientsService } from 'src/app/patients/patients.service';
+import { RendezVousService } from 'src/app/rendez-vous/rendez-vous.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +24,9 @@ export class DashboardComponent implements OnInit {
   public monthlySalesChartOptions: any = {};
   public cloudStorageChartOptions: any = {};
 
-  // colors and font variables for apex chart 
+  term: any;
+
+  // colors and font variables for apex chart
   obj = {
     primary        : "#6571ff",
     secondary      : "#7987a1",
@@ -42,7 +48,11 @@ export class DashboardComponent implements OnInit {
    */
   currentDate: NgbDateStruct;
 
-  constructor(private calendar: NgbCalendar) {}
+  constructor(private calendar: NgbCalendar, private patientService: PatientsService,private rendezVousService: RendezVousService) {}
+
+  patients: PatientDto[];
+  rendezVous: RendezVousDto[];
+
 
   ngOnInit(): void {
     this.currentDate = this.calendar.getToday();
@@ -59,6 +69,19 @@ export class DashboardComponent implements OnInit {
       this.addRtlOptions();
     }
 
+    this.patientService.getPatients().subscribe(
+      (elements)=>{
+        this.patients = elements;
+      }
+    );
+
+
+    this.rendezVousService.getRendezVous().subscribe(
+      (element) => {
+
+        this.rendezVous = element;
+      }
+    );
   }
 
 
@@ -433,10 +456,10 @@ function getMonthlySalesChartOptions(obj: any) {
         show: false
       },
     },
-    colors: [obj.primary],  
+    colors: [obj.primary],
     fill: {
       opacity: .9
-    } , 
+    } ,
     grid: {
       padding: {
         bottom: -4
@@ -528,7 +551,7 @@ function getMonthlySalesChartOptions(obj: any) {
           background: obj.light,
           strokeWidth: '100%',
           opacity: 1,
-          margin: 5, 
+          margin: 5,
         },
         dataLabels: {
           showOn: "always",

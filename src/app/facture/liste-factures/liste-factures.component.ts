@@ -10,6 +10,7 @@ import { Patient } from 'src/app/patients/Patient';
 import { PatientsService } from 'src/app/patients/patients.service';
 import { Employee } from 'src/app/patients/Employee';
 import { FactureDto } from 'src/app/modals/FactureDto';
+import { FactureServiceService } from '../facture-service.service';
 @Component({
   selector: 'app-liste-factures',
   templateUrl: './liste-factures.component.html',
@@ -32,41 +33,27 @@ export class ListeFacturesComponent implements OnInit {
   displayModal: boolean;
   term: any;
 
+
+
   @ViewChild("editFactureForm") editFactureForm: NgForm;
 
   position: string;
 
-  factures: FactureDto[] = [
-    {
-      id:1,
-      montant:200,
-       patient:{
-        id:2,
-        nomComplet:"Amine Daamir",
+  factures: FactureDto[] = [];
 
 
-      }
-
-
-
-
-
-    }
-  ];
-
-
-  constructor(private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
+  constructor(private factureService: FactureServiceService,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true;
-    this.patientService.getEmployees().subscribe(element=>{
-      this.employees = element;
-    })
+
+    this.getFactures();
+
 
 
   }
 
-  confirm1() {
+  confirm1(idFacture: any) {
       this.confirmationService.confirm({
           message: 'Êtes-vous sûr de vouloir continuer ?',
           header: 'Confirmation',
@@ -74,6 +61,11 @@ export class ListeFacturesComponent implements OnInit {
           rejectLabel:"Non",
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
+            this.factureService.deleteFacture(idFacture).subscribe(
+              (response) =>{
+                console.log(response);
+              }
+            );
               this.msgs = [{severity:'success', summary:'Confirmé', detail:'Les données bien supprimé'}];
           },
           reject: () => {
@@ -109,6 +101,7 @@ export class ListeFacturesComponent implements OnInit {
     console.log(this.editFacture.montant);
 
 
+
   }
   onUpdateEmloyee(patient: Patient){
 
@@ -119,8 +112,22 @@ export class ListeFacturesComponent implements OnInit {
     this.showDetailFacture= true;
   }
 
-  onSubmitConsultationForm(facture:FactureDto){
+  onSubmitConsultationForm(facture:FactureDto, idFacture: any){
     console.log(facture);
+    this.factureService.updateFacture(facture,idFacture).subscribe(
+      (response)=> {
+        console.log(response);
+      }
+    );
+    this.modifierFactureModal = false;
+  }
+
+  getFactures(){
+      this.factureService.getFactures().subscribe(
+        (response: FactureDto[]) =>{
+          this.factures = response;
+        }
+      );
   }
 
 

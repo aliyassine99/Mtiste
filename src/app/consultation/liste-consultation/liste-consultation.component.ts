@@ -12,6 +12,9 @@ import { Employee } from 'src/app/patients/Employee';
 import { RendezVousDto } from 'src/app/modals/RendezVousDto';
 import { OrdonnanceDto } from 'src/app/modals/OrdonnanceDto';
 import { ConsultationDto } from 'src/app/modals/ConsulationDto';
+import { ConsultationService } from '../consultation.service';
+import { OrdonnanceService } from 'src/app/ordonnance/ordonnance.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-liste-consultation',
   templateUrl: './liste-consultation.component.html',
@@ -32,6 +35,7 @@ export class ListeConsultationComponent implements OnInit {
   modifierConsultationModal: boolean;
   ordonnanceModal: boolean;
   plusDetailRdvModal: boolean;
+  consultationMoreDetails: ConsultationDto;
 
   editedConsultation: ConsultationDto;
 
@@ -43,43 +47,25 @@ export class ListeConsultationComponent implements OnInit {
   term: any;
   position: string;
 
-  consultations: ConsultationDto[] = [
-    {
-      id:1,
-     description: "Simple",
-      rendezVous:
-      { dateRdv:"22-09-2022",
-      heureRdv: "09:23",
-        patient:{nomComplet:"Ali"}} },
-
-        {
-          id:2,
-         description: "Simple",
-          rendezVous:
-          { dateRdv:"12-12-2022",
-          heureRdv: "09:23",
-            patient:{nomComplet:"Sami"}} },
-            {
-              id:3,
-             description: "James",
-              rendezVous:
-              { dateRdv:"05-05-2022",
-              heureRdv: "09:23",
-                patient:{nomComplet:"Loucy"}} },
-
-  ];
+  consultations: ConsultationDto[] = [];
 
 
-  constructor(private formBuilder: FormBuilder ,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
+  constructor(private router: Router,private consultationService: ConsultationService,private formBuilder: FormBuilder ,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true;
+
+    this.consultationService.getConsultation().subscribe(
+      (response: ConsultationDto[])=>{
+        this.consultations = response;
+      }
+    );
 
 
 
   }
 
-  confirm1() {
+  confirm1(deleteConsultationId: any) {
       this.confirmationService.confirm({
           message: 'Êtes-vous sûr de vouloir continuer ?',
           header: 'Confirmation',
@@ -87,6 +73,12 @@ export class ListeConsultationComponent implements OnInit {
           rejectLabel:"Non",
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
+            this.consultationService.deleteConsultation(deleteConsultationId).subscribe(
+              (element: ConsultationDto)=>{
+                console.log(element);
+                this.consultations;
+              }
+            );
               this.msgs = [{severity:'success', summary:'Confirmé', detail:'Les données bien supprimé'}];
           },
           reject: () => {
@@ -142,12 +134,13 @@ export class ListeConsultationComponent implements OnInit {
 
   }
 
-  showDetailRdvModal(){
+  showDetailRdvModal(consultation: ConsultationDto){
 
     this.modifierConsultationModal= false;
     this.ordonnanceModal= false;
 
     this.plusDetailRdvModal= true;
+    this.consultationMoreDetails = consultation;
 
 
   }
@@ -155,9 +148,38 @@ export class ListeConsultationComponent implements OnInit {
 
   }
 
-  onSubmitConsultationForm(updatedConsultation: ConsultationDto){
+  onSubmitConsultationForm(updatedConsultation: ConsultationDto, cosultationEditId: any){
 
-    console.log(updatedConsultation);
+    this.consultationService.updateConsultatio(updatedConsultation,cosultationEditId).subscribe(
+      (element: ConsultationDto)=>{
+        console.log(element);
+        this.consultations;
+      }
+    )
+    this.modifierConsultationModal= false;
+  }
+
+
+  onAddConsultation(consultation: ConsultationDto){
+
+    const ordonnanceForm: ConsultationDto ={
+
+      "id": this.ordonnanceForm.value.rendezVousId,
+      "ordonnance":{"description": this.ordonnanceForm.value.description}
+
+    }
+
+    this.consultationService.addOrdonnance(ordonnanceForm).subscribe(
+      (response: ConsultationDto)=>{
+        console.log(response);
+      }
+
+    )
+
+    this.ordonnanceModal = false;
+    this.router.navigate(["/ordonnance/liste-ordonnance"]);
+
+
   }
 
 

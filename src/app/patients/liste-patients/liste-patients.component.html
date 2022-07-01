@@ -22,6 +22,7 @@
           </div>
         </div>
        <div class="table-responsive mt-3">
+
           <table id="dataTableExample" class="table">
             <thead>
               <tr>
@@ -42,7 +43,7 @@
               <tr *ngFor="let patient of patients | filter:term; let i = index">
                 <td>{{ i }}</td>
                 <td>{{patient.cin}}</td>
-                <td>{{patient.nomComplet}}</td>
+                <td>{{patient.nomPrenom}}</td>
                 <td>{{patient.email}}</td>
                 <td>{{patient.telephone}}</td>
 
@@ -53,7 +54,7 @@
         <td>
           <button pButton pRipple type="button" (click)="showEditPatientModal(patient)" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
           <button pButton pRipple type="button" (click)="showMoreInfos(patient)" icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
-           <button pButton pRipple type="button" (click)="confirm1()" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+           <button pButton pRipple type="button" (click)="confirm1(patient.id)" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
     </td>
 
 
@@ -104,7 +105,7 @@
         <div class="col-sm-12">
           <div class="mb-3">
             <label class="form-label">Nom Complet</label>
-            <input ngModel="{{ editPatient?.nomComplet}}" class="form-control" name="nomComplet" type="text"  placeholder="Entrer le nom et prenom" ngModel>
+            <input ngModel="{{ editPatient?.nomPrenom}}" class="form-control" name="nomComplet" type="text"  placeholder="Entrer le nom et prenom" ngModel>
 
           </div>
         </div>
@@ -162,7 +163,7 @@
 
       </div>
       <div class="d-flex justify-content-center mt-2">
-        <button type="submit" (click)="onUpdatePatient(patientEditForm.value)" class="btn btn-success">Enregistrer</button>
+        <button type="submit" routerLink="/patients/liste" (click)="onUpdatePatient(patientEditForm.value,editPatient.id)" class="btn btn-success">Enregistrer</button>
         <button (click)="editPatientModal=false" class="btn btn-warning">Annuler</button>
       </div>
 
@@ -187,7 +188,7 @@
 </div>
 
 
-<p-dialog header="Plus de d'informations" [(visible)]="showDetailDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+<p-dialog header="Plus d'informations" [(visible)]="showDetailDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
     [draggable]="false" [resizable]="false">
 
 <div class="row">
@@ -196,7 +197,7 @@
 </div>
 
 <div class="row">
-  <div class="col-12"><b>Nom Complet: </b>{{patientMoreInfos?.nomComplet}}</div>
+  <div class="col-12"><b>Nom Complet: </b>{{patientMoreInfos?.nomPrenom}}</div>
     <hr>
 </div>
 <div class="row">
@@ -261,6 +262,7 @@
 </form>
 
 </p-dialog>
+
 
 
 

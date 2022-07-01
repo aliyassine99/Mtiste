@@ -1,4 +1,29 @@
+<p-toast></p-toast>
+<p-toast position="top-left" key="tl"></p-toast>
+<p-toast position="top-center" key="tc"></p-toast>
+<p-toast position="bottom-center" key="bc"></p-toast>
 
+<p-toast position="bottom-center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
+    <ng-template let-message pTemplate="message">
+        <div class="p-flex p-flex-column" style="flex: 1">
+            <div class="p-text-center">
+                <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+                <h4>{{message.summary}}</h4>
+                <p>{{message.detail}}</p>
+            </div>
+            <div class="p-grid p-fluid">
+                <div class="p-col-6">
+                    <button type="button" pButton (click)="onConfirm()" label="Yes" class="p-button-success"></button>
+                </div>
+                <div class="p-col-6">
+                    <button type="button" pButton (click)="onReject()" label="No" class="p-button-secondary"></button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
+
+<!-- Tost -->
 <div class="container">
 
   <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
@@ -31,6 +56,7 @@
                 <th>Heurse rendez vous</th>
 
                 <th>Patient</th>
+                <th>Etat de rendez-vous</th>
                 <th>Ajouter Consultation</th>
 
                 <th>Operation</th>
@@ -39,11 +65,12 @@
             </thead>
             <tbody>
 
-              <tr *ngFor="let rdv of rendezVous | filter:term; let i = index">
+              <tr *ngFor="let rdv of allRendezVous | filter:term; let i = index">
                 <td>{{ i }}</td>
-                <td>{{rdv.dateRdv}}</td>
-                <td>{{rdv.heureRdv}}</td>
-                <td>{{ rdv.patient.nomComplet }}</td>
+                <td>{{rdv.dateVisite}}</td>
+                <td>{{rdv.heureVisite}}</td>
+                <td>{{ rdv.patient.nomPrenom }}</td>
+                <td>{{ rdv.etat }}</td>
                 <td>
                   <button pButton pRipple type="button" (click)="showConsultationModal(rdv)" icon="pi pi-eye" class="p-button-rounded p-button-info"></button>
 
@@ -51,8 +78,8 @@
 
         <td>
           <button pButton pRipple type="button" (click)="showModfierRdvModal(rdv)" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
-          <button pButton pRipple type="button" (click)="showDetailRdvModal()"  icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
-           <button pButton pRipple type="button" (click)="confirm1()" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+          <button pButton pRipple type="button" (click)="showDetailRdvModal(rdv)"  icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
+           <button pButton pRipple type="button" (click)="confirm1(rdv.id)" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
 
           </td>
 
@@ -91,7 +118,7 @@
 
         <div class="col-xs-12"> <div class="mb-3">
           <label for="exampleInputUsername1" class="form-label">Date du rendez vous</label>
-          <input type="date" name="dateRdv" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username" ngModel="{{editRendezVous?.dateRdv}}">
+          <input type="date" name="dateVisite" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username" ngModel="{{editRendezVous?.dateVisite}}">
 
         </div></div>
 
@@ -101,7 +128,7 @@
 
         <div class="col-xs-12"> <div class="mb-3">
           <label for="exampleInputUsername1" class="form-label">Heure du rendez vous</label>
-           <select ngModel="{{editRendezVous?.heureRdv}}"  name="heureRdv" class="form-control">
+           <select ngModel="{{editRendezVous?.heureVisite}}"  name="heureVisite" class="form-control">
             <option>8:00</option>
             <option>9:00</option>
             <option>10:00</option>
@@ -119,7 +146,7 @@
 
 
       <div class="d-flex justify-content-center mt-2">
-        <button type="submit" (click)="onUpdateRendezVous(rendezVousEditForm.value)" class="btn btn-success">Enregistrer</button>
+        <button type="submit" (click)="onUpdateRendezVous(rendezVousEditForm.value, editRendezVous.id)" class="btn btn-success">Enregistrer</button>
         <button (click)="modifierRdvModal=false" class="btn btn-warning">Annuler</button>
       </div>
     </form>
@@ -136,7 +163,7 @@
   <div class="row">
 
     <div class="col-md-12"> <div class="mb-3">
-      <input type="hidden" name="rdv" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username"  [(ngModel)]="selectedOne" ngModel>
+      <input type="hidden" name="id" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username"  [(ngModel)]="selectedOne" ngModel>
 
     </div></div>
 
@@ -147,7 +174,8 @@
 
   </div>
 
-  <button type="submit"  class="btn btn-primary" >Enregistrer</button><button (click)="consultationModal=false"  class="btn btn-primary" >Fermer</button>
+  <button type="submit"  class="btn btn-primary" >Enregistrer</button>
+  <button (click)="consultationModal=false"  class="btn btn-primary" >Fermer</button>
 </form>
 
 </p-dialog>
@@ -160,18 +188,30 @@
 <!-- Plus de detail sur la consultation -->
 <p-dialog header="Plus d'informations" [(visible)]="plusDetailRdvModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
 [draggable]="false" [resizable]="false">
- <form #editForm="ngForm">
-
-  <div class="row">
-
-    <div class="col-md-12"> <div class="mb-3">
-     <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur consequatur quas molestiae accusamus eaque maxime amet modi blanditiis enim voluptate! Placeat odio omnis ipsam earum ipsum minima nostrum eveniet. Dolor.</p>
-    </div></div>
-
-  </div>
 
 
-</form>
+<div class="row">
+  <div class="col-12"><b>Date rendez-vous: </b>{{rendezVousMoreDetails?.dateVisite}}</div>
+    <hr>
+</div>
+<div class="row">
+  <div class="col-12"><b>Heure rendez-vous: </b>{{rendezVousMoreDetails?.heureVisite}}</div>
+    <hr>
+</div>
+
+<div class="row">
+  <div class="col-12"><b>Nom du patient: </b>{{rendezVousMoreDetails?.patient?.nomPrenom}}</div>
+    <hr>
+</div>
+
+<div class="row">
+  <div class="col-12"><b>Nom du patient: </b>{{rendezVousMoreDetails?.etat}}</div>
+    <hr>
+</div>
+
+
+
+
 
 </p-dialog>
 </div>

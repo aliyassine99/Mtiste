@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
   <div>
-    <h4 class="mb-3 mb-md-0">Welcome to Dashboard</h4>
+    <h4 class="mb-3 mb-md-0">Mtiste</h4>
   </div>
 
 </div>
@@ -8,7 +8,7 @@
 <div class="row">
   <div class="col-12 col-xl-12 stretch-card">
     <div class="row flex-grow-1">
-      <div class="col-md-4 grid-margin stretch-card">
+      <div class="col-md-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
@@ -28,13 +28,13 @@
             </div>
             <div class="row">
               <div class="col-6 col-md-12 col-xl-5">
-                <h3 class="mb-2">100</h3>
+                <h3 class="mb-2">{{patients.length}}</h3>
                 <div class="d-flex align-items-baseline">
                   <p class="text-success">
-                   <!--<span>+3.3%</span>-->
-                    <i data-feather="pi pi-user" appFeatherIcon class="icon-sm mb-1"></i>
+
                   </p>
                 </div>
+
               </div>
               <div class="col-6 col-md-12 col-xl-7">
                 <div class="mt-md-3 mt-xl-0">
@@ -52,11 +52,12 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 grid-margin stretch-card">
+
+      <div class="col-md-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0">New Orders</h6>
+              <h6 class="card-title mb-0">Nombre des rendez-vous d'aujourd'hui</h6>
               <div ngbDropdown class="mb-2">
                 <button ngbDropdownToggle class="btn p-0 no-dropdown-toggle-icon" type="button" id="dropdownMenuButton1">
                   <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
@@ -72,10 +73,10 @@
             </div>
             <div class="row">
               <div class="col-6 col-md-12 col-xl-5">
-                <h3 class="mb-2">35,084</h3>
+                <h3 class="mb-2">{{ rendezVous.length }}</h3>
                 <div class="d-flex align-items-baseline">
                   <p class="text-danger">
-                    <span>-2.8%</span>
+
                     <i data-feather="arrow-down" appFeatherIcon class="icon-sm mb-1"></i>
                   </p>
                 </div>
@@ -95,54 +96,108 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0">Growth</h6>
-              <div ngbDropdown class="mb-2">
-                <button ngbDropdownToggle class="btn p-0 no-dropdown-toggle-icon" type="button" id="dropdownMenuButton2">
-                  <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
-                </button>
-                <div ngbDropdownMenu aria-labelledby="dropdownMenuButton2">
-                  <a ngbDropdownItem class="d-flex align-items-center" href="" (click)="false"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
-                  <a ngbDropdownItem class="d-flex align-items-center" href="" (click)="false"><i data-feather="edit-2" appFeatherIcon class="icon-sm me-2"></i> <span class="">Edit</span></a>
-                  <a ngbDropdownItem class="d-flex align-items-center" href="" (click)="false"><i data-feather="trash" appFeatherIcon class="icon-sm me-2"></i> <span class="">Delete</span></a>
-                  <a ngbDropdownItem class="d-flex align-items-center" href="" (click)="false"><i data-feather="printer" appFeatherIcon class="icon-sm me-2"></i> <span class="">Print</span></a>
-                  <a ngbDropdownItem class="d-flex align-items-center" href="" (click)="false"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6 col-md-12 col-xl-5">
-                <h3 class="mb-2">89.87%</h3>
-                <div class="d-flex align-items-baseline">
-                  <p class="text-success">
-                    <span>+2.8%</span>
-                    <i data-feather="arrow-up" appFeatherIcon class="icon-sm mb-1"></i>
-                  </p>
-                </div>
-              </div>
-              <div class="col-6 col-md-12 col-xl-7">
-                <div class="mt-md-3 mt-xl-0">
-                  <apx-chart
-                    [series]="growthChartOptions.series"
-                    [chart]="growthChartOptions.chart"
-                    [colors]="growthChartOptions.colors"
-                    [xaxis]="growthChartOptions.xaxis"
-                    [stroke]="growthChartOptions.stroke"
-                    [markers]="growthChartOptions.markers"
-                  ></apx-chart>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+
     </div>
   </div>
-</div> <!-- row -->
+</div>
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+  <div>
+    <h4 class="mb-3 mb-md-0">Les Rendez-vous d'aujourdhui</h4>
+  </div>
 
+</div>
+<div class="row mt-5">
+
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table id="dataTableExample" class="table">
+        <thead>
+          <tr>
+
+
+            <th>Date rendez vous</th>
+            <th>Heurse rendez vous</th>
+
+
+            <th>Etat du rendez-vous</th>
+
+
+
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+
+            <td>2022-07-01</td>
+            <td>08:00</td>
+
+           <td>  <span class="badge bg-danger">Annule</span></td>
+
+ </tr>
+
+ <tr>
+
+  <td>2022-07-01</td>
+  <td>09:00</td>
+
+  <td>  <span class="badge bg-success">Fait</span></td>
+
+</tr>
+
+<tr>
+
+  <td>2022-07-01</td>
+  <td>11:00</td>
+
+  <td>  <span class="badge bg-success">Fait</span></td>
+
+</tr>
+
+<tr>
+
+  <td>2022-07-01</td>
+  <td>12:00</td>
+
+  <td>  <span class="badge bg-primary">En attent</span></td>
+
+</tr>
+<tr>
+
+  <td>2022-07-01</td>
+  <td>15:00</td>
+
+  <td>  <span class="badge bg-primary">En attent</span></td>
+
+</tr>
+<tr>
+
+  <td>2022-07-01</td>
+  <td>16:00</td>
+
+  <td>  <span class="badge bg-primary">En attent</span></td>
+
+</tr>
+<tr>
+
+  <td>2022-07-01</td>
+  <td>17:00</td>
+
+  <td>  <span class="badge bg-primary">En attent</span></td>
+
+</tr>
+
+        </tbody>
+
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+  <!--
 <div class="row">
   <div class="col-12 col-xl-12 grid-margin stretch-card">
     <div class="card overflow-hidden">
@@ -190,7 +245,7 @@
       </div>
     </div>
   </div>
-</div> <!-- row -->
+</div>
 
 <div class="row">
   <div class="col-lg-7 col-xl-8 grid-margin stretch-card">
@@ -275,7 +330,7 @@
       </div>
     </div>
   </div>
-</div> <!-- row -->
+</div>
 
 <div class="row">
   <div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
@@ -361,6 +416,7 @@
       </div>
     </div>
   </div>
+
   <div class="col-lg-7 col-xl-8 stretch-card">
     <div class="card">
       <div class="card-body">
@@ -455,4 +511,5 @@
       </div>
     </div>
   </div>
-</div> <!-- row -->
+-->
+

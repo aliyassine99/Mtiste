@@ -1,3 +1,4 @@
+import { OrdonnanceDto } from "./OrdonnanceDto";
 import { RendezVousDto } from "./RendezVousDto";
 
 export interface ConsultationDto{
@@ -6,6 +7,7 @@ export interface ConsultationDto{
   createdAt?:                Date;
   isEnabled?:                boolean;
   rendezVous?:               RendezVousDto;
+  ordonnance?: OrdonnanceDto;
 
 }
 

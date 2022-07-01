@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { json } from 'ngx-custom-validators/src/app/json/validator';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ConsultationDto } from '../modals/ConsulationDto';
+import { PatientDto } from '../modals/PatientDto';
+import { RendezVousDto } from '../modals/RendezVousDto';
 import { RendezVous } from './RendezVous';
 
 @Injectable({
@@ -10,25 +14,32 @@ import { RendezVous } from './RendezVous';
 export class RendezVousService {
 
 
-  private apiUrl = environment.apiUrl;
+   apiUrl = environment.apiUrl;
+   private  headers = { 'content-type': 'application/json'};
   constructor(private http: HttpClient) { }
 
 
-  public getRendezVous(): Observable<RendezVous[]>{
-    return this.http.get<RendezVous[]>("http://localhost:8888/employees");
+  public getRendezVous(): Observable<RendezVousDto[]>{
+    return this.http.get<RendezVousDto[]>(this.apiUrl+"/rendez-vous/all-rendez-vous");
   }
 
-  public addRendezVous(rendezVous: RendezVous): Observable<RendezVous>{
-   return  this.http.post<RendezVous>(`${this.apiUrl}/rendez-vous/add`, rendezVous);
+  public addRendezVousToPatient(patientRdv: PatientDto): Observable<any>{
+
+
+   return  this.http.post(`${this.apiUrl}/patient/save-patient`, patientRdv, { "headers" : this.headers });
   }
 
-  public updateRendezVous (rendezVous: RendezVous): Observable<RendezVous>{
+  public updateRendezVous (rendezVous: RendezVousDto, idRdv:any): Observable<any>{
 
-    return this.http.put<RendezVous>(`${this.apiUrl}/rendez-vous/update`, rendezVous);
+    return this.http.put<RendezVousDto>(`${this.apiUrl}/rendez-vous/update-rendez-vous/${idRdv}`, rendezVous, {"headers": this.headers});
   }
 
   public deleteRendezVous(rendezVousId: number): Observable<void>{
-    return this.http.delete<void>(`${this.apiUrl}/rendez-vous/delete/${rendezVousId}`);
+    return this.http.delete<void>(`${this.apiUrl}/rendez-vous/delete-rendez-vous/${rendezVousId}`);
+  }
+
+  public addConsultation(rdvConsultation: ConsultationDto):Observable<ConsultationDto>{
+    return this.http.post(this.apiUrl+"/rendez-vous/save-consultation", rdvConsultation , {"headers": this.headers});
   }
 
 

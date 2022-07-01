@@ -1,6 +1,7 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { EventApi } from '@fullcalendar/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationService, Message, PrimeNGConfig } from 'primeng/api';
@@ -43,7 +44,7 @@ export class ListeRendezVousComponent  {
 
 
 
-  constructor(private httpClient: HttpClient,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private rendezVousService: RendezVousService) {}
+  constructor(private router: Router,private httpClient: HttpClient,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private rendezVousService: RendezVousService) {}
 
 
 
@@ -55,11 +56,14 @@ export class ListeRendezVousComponent  {
       this.newEv = response;
       console.log(this.newEv);
       for(let i =0;i< this.newEv.length ; i++){
-        console.log(this.newEv[i].dateRdv+" "+this.newEv[i].heureRdv);
-        const date = this.newEv[i].dateRdv+" "+this.newEv[i].heureRdv;
+
+        console.log(this.newEv[i].dateVisite+" "+this.newEv[i].heureVisite);
+        const date = this.newEv[i].dateVisite+" "+this.newEv[i].heureVisite;
+        const patient= this.newEv[i].patient?.nomPrenom;
        this.newEvents.push({
 
-        date: new Date(date)
+        date: new Date(date),
+        title: patient
        })
        }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 
-import {ConfirmationService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {Message} from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +11,8 @@ import { PatientsService } from 'src/app/patients/patients.service';
 import { Employee } from 'src/app/patients/Employee';
 import { RendezVousDto } from 'src/app/modals/RendezVousDto';
 import { ConsultationDto } from 'src/app/modals/ConsulationDto';
+import { RendezVousService } from '../rendez-vous.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-table-rdv',
@@ -20,11 +22,11 @@ import { ConsultationDto } from 'src/app/modals/ConsulationDto';
       margin-right: .25em;
   }
 `],
-providers: [ConfirmationService],
+providers: [ConfirmationService, MessageService],
 })
 export class TableRdvComponent implements OnInit {
 
-  employees: Employee[];
+
   msgs: Message[] = [];
   form: FormGroup;
   consultationForm: FormGroup;
@@ -33,8 +35,11 @@ export class TableRdvComponent implements OnInit {
   modifierRdvModal: boolean;
   consultationModal: boolean;
 
+  rendezVousMoreDetails: RendezVousDto;
+
   plusDetailRdvModal: boolean;
   term: any;
+  errorValue: string;
 
   @ViewChild("saveConsultationForm") saveConsultationForm: NgForm;
   @ViewChild("rendezVousEditForm") rendezVousEditForm: NgForm;
@@ -45,52 +50,42 @@ export class TableRdvComponent implements OnInit {
 
   position: string;
 
-  rendezVous: RendezVousDto[] = [
-    {
-      id:1,
-      dateRdv: "12-03-2022",
-      heureRdv: "09:00",
-      patient: {nomComplet: "Marc Shut"}
+  allRendezVous: RendezVousDto[] = [];
 
 
-
-
-
-    },
-    {
-      id:2,
-      dateRdv: "12-03-2022",
-      heureRdv: "09:00",
-      patient: {nomComplet: "Sanuel Tadey"}
-
-
-
-
-
-    },
-    {
-      id:3,
-      dateRdv: "12-03-2022",
-      heureRdv: "09:00",
-      patient: {nomComplet: "Sam dee"}
-
-
-
-
-
-    }
-  ];
-
-
-  constructor(private formBuilder: FormBuilder,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
+  constructor(private router :Router,private messageService: MessageService,private rendezVousSerive: RendezVousService, private formBuilder: FormBuilder,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true;
 
+    this.getRendezVous();
+
+
+
+
+
 
   }
+  public getRendezVous(){
+    this.rendezVousSerive.getRendezVous().subscribe((response: RendezVousDto[])=>{
 
-  confirm1() {
+      this.allRendezVous = response;
+      for(let i =0; i<this.allRendezVous.length; i++){
+        if(this.allRendezVous[i].etat == "EN_ATTENTE"){
+          this.allRendezVous[i].etat = "En attente";
+        }
+        if(this.allRendezVous[i].etat == "FAIT"){
+          this.allRendezVous[i].etat = "Fait";
+        }
+        else{
+          this.allRendezVous[i].etat = "Annule";
+        }
+      }
+    }, (error) =>{
+      console.log(error.error);
+    })
+  }
+  confirm1(idRdv: number) {
       this.confirmationService.confirm({
           message: 'Êtes-vous sûr de vouloir continuer ?',
           header: 'Confirmation',
@@ -98,6 +93,11 @@ export class TableRdvComponent implements OnInit {
           rejectLabel:"Non",
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
+            this.rendezVousSerive.deleteRendezVous(idRdv).subscribe(
+              element => {
+                console.log(element);
+              }
+            )
               this.msgs = [{severity:'success', summary:'Confirmé', detail:'Les données bien supprimé'}];
           },
           reject: () => {
@@ -151,35 +151,80 @@ export class TableRdvComponent implements OnInit {
   }
 
 
-  showDetailRdvModal(){
+  showDetailRdvModal(idRendezVous: RendezVousDto){
 
     this.modifierRdvModal= false;
     this.consultationModal= false;
 
     this.plusDetailRdvModal= true;
+    this.rendezVousMoreDetails = idRendezVous;
+
+    console.log(this.rendezVousMoreDetails);
 
 
   }
-  onUpdateEmloyee(patient: Patient){
 
-  }
 
   onSubmitConsultationForm(){
 
 
-    const consultation: ConsultationDto ={
-      description: this.saveConsultationForm.value.description,
-      rendezVous: {id: this.saveConsultationForm.value.rdv}
+    const consultation: RendezVousDto = {
+      "id":  this.saveConsultationForm.value.id ,
+      "consultation": {"description": this.saveConsultationForm.value.description}
     }
 
-    console.log(consultation);
+
+
+    let object = JSON.stringify(consultation);
+
+
+    console.log(object);
+   this.rendezVousSerive.addConsultation(consultation).subscribe(
+    (element: ConsultationDto) => {
+      console.log(element);
+      console.log(element);
+    }
+   )
+   this.consultationModal = false;
+   this.router.navigate(["/consultation/liste"]);
+
   }
 
 
-  onUpdateRendezVous(updatedRdv: RendezVousDto){
+  onUpdateRendezVous(updatedRdv: RendezVousDto, idRdv:any){
 
-    console.log(updatedRdv);
+    this.rendezVousSerive.updateRendezVous(updatedRdv,idRdv).subscribe(
+      (element: RendezVousDto) => {
+        console.log(element);
+
+
+      }
+    )
+
+    this.getRendezVous();
+    this.modifierRdvModal = false;
+
+
+
   }
+
+
+  onConfirm() {
+    this.messageService.clear('c');
+}
+
+onReject() {
+    this.messageService.clear('c');
+}
+
+clear() {
+    this.messageService.clear();
+}
+
+
+
+
+
 
 
 

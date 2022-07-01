@@ -11,6 +11,11 @@ import { Employee } from '../Employee';
 import { PatientDto } from 'src/app/modals/PatientDto';
 import { FactureDto } from 'src/app/modals/FactureDto';
 
+import * as XLSX from 'xlsx';
+import { FactureServiceService } from 'src/app/facture/facture-service.service';
+import { Router } from '@angular/router';
+import { throwIfEmpty } from 'rxjs';
+
 @Component({
   selector: 'app-liste-patients',
   templateUrl: './liste-patients.component.html',
@@ -37,6 +42,7 @@ export class ListePatientsComponent implements OnInit {
   term: any;
 
 
+
   @ViewChild("patientEditForm") patientEditForm: NgForm;
 
   @ViewChild("factureForm") factureForm: NgForm;
@@ -48,61 +54,17 @@ export class ListePatientsComponent implements OnInit {
   position: string;
 
   patients: PatientDto[] = [
-    {
-      id:1,
-      cin: "AB",
-      nomComplet:"Amine merdi",
-      dateNaissance: new Date("12/04/2022"),
-      sexe: "Masculin",
-      email:"amin@gmail.com",
-      telephone: 923469828,
-      adresse: "Adresse",
 
 
-
-
-
-
-    },
-    {
-      id:2,
-      cin: "123BH",
-      nomComplet:"Amine merdi",
-      dateNaissance: new Date("12/04/2022"),
-      sexe: "Feminin",
-      email:"amin@gmail.com",
-      telephone: 923469828,
-      adresse: "Adresse"
-
-
-
-
-
-    },
-    {
-      id:3,
-      cin: "QWER",
-      nomComplet:"Amine merdi",
-      dateNaissance: new Date("12/04/2022"),
-      sexe: "Masculin",
-      email:"amin@gmail.com",
-      telephone: 923469828,
-      adresse: "Adresse"
-
-
-
-
-
-    },
 
   ];
 
 
-  constructor(private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
+  constructor(private router: Router,private factureService: FactureServiceService,private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig,private modalService: NgbModal,private patientService: PatientsService) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true;
-
+    this.getPatients();
 
 
 
@@ -113,7 +75,7 @@ export class ListePatientsComponent implements OnInit {
     this.pageOfItems = pageOfItems;
 }
 
-  confirm1() {
+  confirm1(patientId:number) {
       this.confirmationService.confirm({
           message: 'Êtes-vous sûr de vouloir continuer ?',
           header: 'Confirmation',
@@ -121,7 +83,14 @@ export class ListePatientsComponent implements OnInit {
           rejectLabel:"Non",
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
+            this.patientService.deletePatient(patientId).subscribe(
+              (element: void)=>{
+                console.log("deleted");
+                this.getPatients();
+              }
+            )
               this.msgs = [{severity:'success', summary:'Confirmé', detail:'Les données bien supprimé'}];
+
           },
           reject: () => {
               this.msgs = [{severity:'info', summary:'Annulé', detail:'Vous avez rejeté votre operation'}];
@@ -175,17 +144,53 @@ export class ListePatientsComponent implements OnInit {
 
   onAddFacture(){
 
-    const facturePatient: FactureDto ={
-      id:1,
-      montant: this.factureForm.value.montant,
-      patient:{id: this.factureForm.value.id}
+    const facturePatient: PatientDto ={
+
+      "id":  this.factureForm.value.id,
+      "factures":
+      [
+        { "montant": this.factureForm.value.montant}
+        ]
+
     }
 
     console.log(facturePatient);
 
+    this.factureService.addFacture(facturePatient).subscribe(
+      element=>{
+        console.log(element);
+      }, error=>{
+        console.log(error);
+      }
+    );
+
+    this.factureModal= false;
+    this.router.navigate(["facture/liste-factures"]);
+
   }
 
-  onUpdatePatient(updatedPatient: PatientDto){console.log(updatedPatient);}
+  onUpdatePatient(updatedPatient: PatientDto, idPatient:any){
+    console.log(updatedPatient);
+    this.patientService.updatePatient(updatedPatient,idPatient).subscribe(
+      (element: PatientDto)=>{
+        this.getPatients();
+        console.log(element);
+      }
+    )
+    this.editPatientModal = false;
+  }
+
+
+  getPatients(): void{
+    this.patientService.getPatients().subscribe(
+      (response: PatientDto[])=>{
+      this.patients = response;
+    });
+  }
+
+
+
+
 
 
 

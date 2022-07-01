@@ -39,11 +39,12 @@
             </thead>
             <tbody>
 
+
               <tr *ngFor="let consultation of consultations | filter:term; let i = index">
                 <td>{{ i }}</td>
                 <td>{{consultation.description}}</td>
-                <td>{{consultation.rendezVous.dateRdv}}- {{consultation.rendezVous.heureRdv}}</td>
-                <td>{{consultation.rendezVous.patient.nomComplet }}</td>
+                <td>{{consultation.rendezVous.dateVisite}}- {{consultation.rendezVous.heureVisite}}</td>
+                <td>{{consultation.rendezVous.patient.nomPrenom }}</td>
                <td>
                     <button pButton pRipple type="button" (click)="showOrdonnaceModal(consultation)" icon="pi pi-book" class="p-button-rounded p-button-help"></button>
 
@@ -51,8 +52,8 @@
 
         <td>
           <button pButton pRipple type="button" (click)="showModfierConsultationModal(consultation)" icon="pi pi-pencil" class="p-button-rounded p-button-warning"></button>
-          <button pButton pRipple type="button" (click)="showDetailRdvModal()"  icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
-           <button pButton pRipple type="button" (click)="confirm1()" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+          <button pButton pRipple type="button" (click)="showDetailRdvModal(consultation)"  icon="pi pi-info-circle" class="p-button-rounded p-button-success"></button>
+           <button pButton pRipple type="button" (click)="confirm1(consultation.id)" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
 
           </td>
 
@@ -98,7 +99,7 @@
         </div></div>
 
         <div class="d-flex justify-content-center mt-2">
-          <button type="submit" (click)="onSubmitConsultationForm(editConsultationForm.value)" class="btn btn-secondary">Enregistrer</button>
+          <button type="submit" (click)="onSubmitConsultationForm(editConsultationForm.value,editedConsultation?.id)" class="btn btn-secondary">Enregistrer</button>
           <button (click)="modifierConsultationModal=false" class="btn btn-warning">Annuler</button>
         </div>
 
@@ -136,7 +137,7 @@
 
   </div>
 
-  <button type="submit"  class="btn btn-primary" >Enregistrer</button><button (click)="ordonnanceModal=false"  class="btn btn-primary" >Fermer</button>
+  <button type="submit" (click)="onAddConsultation(ordonnanceForm.value)" class="btn btn-primary" >Enregistrer</button><button (click)="ordonnanceModal=false"  class="btn btn-primary" >Fermer</button>
 
 
 </form>
@@ -152,18 +153,14 @@
 <!-- Plus de detail sur la consultation -->
 <p-dialog header="Plus d'informations" [(visible)]="plusDetailRdvModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
 [draggable]="false" [resizable]="false">
- <form #editForm="ngForm">
 
-  <div class="row">
-
-    <div class="col-md-12"> <div class="mb-3">
-     <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur consequatur quas molestiae accusamus eaque maxime amet modi blanditiis enim voluptate! Placeat odio omnis ipsam earum ipsum minima nostrum eveniet. Dolor.</p>
-    </div></div>
-
-  </div>
+<div class="row">
+  <div class="col-12"><b>Description: </b><br>{{consultationMoreDetails?.description}}</div>
+    <hr>
+</div>
 
 
-</form>
+
 
 </p-dialog>
 </div>

@@ -73,6 +73,7 @@ export const MENU: MenuItem[] = [
         link: 'facture/liste-factures',
       }]
   },
+  /*
   {
     label: 'Email',
     icon: 'mail',
@@ -387,5 +388,5 @@ export const MENU: MenuItem[] = [
         link: '/error/500',
       },
     ]
-  },
+  }, */
 ];
